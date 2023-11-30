@@ -12,6 +12,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
   render: args => (
-    <InputField {...args} />
+    <InputField {...args} inputClass="form-input"/>
   )
 }
