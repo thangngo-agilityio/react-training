@@ -1,4 +1,4 @@
-.popup {
+.toast {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,15 +16,15 @@
   border-radius: 8px;
 }
 
-.popup-success {
+.success {
   background-color: var(--color-success);
 }
 
-.popup-error {
+.error {
   background-color: var(--color-error);
 }
 
-.popup-message {
+.toast-message {
   font-size: var(--font-size-small);
   font-weight: 600;
   color: var(--color-secondary);
