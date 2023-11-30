@@ -1,3 +1,5 @@
+import InputField from "@components/common/inputField/InputField"
+import Sort from "@components/common/sort/Sort"
 
 function Header() {
   return (
@@ -7,9 +9,35 @@ function Header() {
       </a>
       <nav className="header-nav">
         <div className="nav-heading">
-          <form className="search-form">
+          <form className="form-search">
+            <img src="../../../src/assets/icon/icon_search.svg" className="icon-search" loading="eager" alt="search" />
+            <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." />
           </form>
         </div>
+        <Sort selectOptions={
+          [
+            {
+              value: undefined,
+              disabled: true,
+              children: 'Sort by'
+            },
+            {
+              value: 'Default',
+              disabled: false,
+              children: 'Default'
+            },
+            {
+              value: 'Name',
+              disabled: false,
+              children: 'Name',
+            },
+            {
+              value: 'Price',
+              disabled: false,
+              children: 'Price',
+            },
+          ]
+        } />
       </nav>
     </header>
   )

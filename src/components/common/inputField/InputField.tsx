@@ -1,4 +1,4 @@
-import { InputFiledProps } from "interfaces/InputField"
+import { InputFiledProps } from "interfaces/input/InputField"
 
 function InputField({ htmlFor, labelClass, label, inputClass, name, value, placeholder, type, onChange }: InputFiledProps) {
   return (
