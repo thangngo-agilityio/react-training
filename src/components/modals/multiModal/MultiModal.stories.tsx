@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
 import MultiModal from "./MultiModal";
-import '../../css/component/modal.css'
 
 const meta: Meta<typeof MultiModal> = {
   title: 'COMPONENTS/MultiModal',
