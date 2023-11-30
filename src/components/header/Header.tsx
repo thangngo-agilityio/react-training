@@ -1,3 +1,4 @@
+import Sort from "@components/common/sort/Sort"
 
 function Header() {
   return (
@@ -11,10 +12,31 @@ function Header() {
             <form className="search-form">
             </form>
           </div>
+          <Sort selectOptions={
+            [
+              {
+                value: undefined,
+                disabled: true,
+                children: 'Sort by'
+              },
+              {
+                value: 'Default',
+                disabled: false,
+                children: 'Default'
+              },
+              {
+                value: 'Name',
+                disabled: false,
+                children: 'Name',
+              },
+              {
+                value: 'Price',
+                disabled: false,
+                children: 'Price',
+              },
+            ]
+          } />
         </nav>
-      </div>
-      <div className="header-sub-wrapper">
-
       </div>
     </header>
   )

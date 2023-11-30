@@ -6,7 +6,6 @@ function App() {
     <div className="container ">
       <Header />
       <div className="wrapper">
-        <h1>Hello Word!!!</h1>
       </div>
     </div>
   );
