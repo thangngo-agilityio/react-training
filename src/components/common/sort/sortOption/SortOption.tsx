@@ -1,4 +1,4 @@
-import { SortOptionProps } from "interfaces/sort/option"
+import { SortOptionProps } from "interfaces/sort/Option"
 
 function SortOption({ value, children, disabled }: SortOptionProps) {
   return (

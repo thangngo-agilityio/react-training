@@ -1,4 +1,4 @@
-.sort-dropdown {
+.sort-value {
   display: flex;
   position: relative;
   width: 162px;
@@ -15,21 +15,17 @@
   transition: .4s;
 }
 
-.sort-dropdown:focus-visible {
+.sort-value:focus-visible {
   outline: none
 }
 
-.sort-dropdown:hover {
+.sort-value:hover {
   background-color: var(--color-primary);
   box-shadow: var(--shadow-tertiary);
   border: 1px solid var(--color-primary);
 }
 
-.dropdown-item {
+.sort-item {
   font-size: var(--font-size-small);
-}
-
-.dropdown-wrapper,
-.dropdown-item {
   color: var(--color-default);
 }
