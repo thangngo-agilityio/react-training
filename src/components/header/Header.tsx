@@ -1,43 +1,44 @@
+import InputField from "@components/common/inputField/InputField"
 import Sort from "@components/common/sort/Sort"
 
 function Header() {
   return (
     <header className="header">
-      <div className="header-wrapper">
-        <a className="link-title" href="/">
-          <h1 className="header-title">Foods Management</h1>
-        </a>
-        <nav className="header-nav">
-          <div className="nav-heading">
-            <form className="search-form">
-            </form>
-          </div>
-          <Sort selectOptions={
-            [
-              {
-                value: undefined,
-                disabled: true,
-                children: 'Sort by'
-              },
-              {
-                value: 'Default',
-                disabled: false,
-                children: 'Default'
-              },
-              {
-                value: 'Name',
-                disabled: false,
-                children: 'Name',
-              },
-              {
-                value: 'Price',
-                disabled: false,
-                children: 'Price',
-              },
-            ]
-          } />
-        </nav>
-      </div>
+      <a className="link-title" href="/">
+        <h1 className="header-title">Foods Management</h1>
+      </a>
+      <nav className="header-nav">
+        <div className="nav-heading">
+          <form className="form-search">
+            <img src="../../../src/assets/icon/icon_search.svg" className="icon-search" loading="eager" alt="search" />
+            <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." />
+          </form>
+        </div>
+        <Sort selectOptions={
+          [
+            {
+              value: undefined,
+              disabled: true,
+              children: 'Sort by'
+            },
+            {
+              value: 'Default',
+              disabled: false,
+              children: 'Default'
+            },
+            {
+              value: 'Name',
+              disabled: false,
+              children: 'Name',
+            },
+            {
+              value: 'Price',
+              disabled: false,
+              children: 'Price',
+            },
+          ]
+        } />
+      </nav>
     </header>
   )
 }

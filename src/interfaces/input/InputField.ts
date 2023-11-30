@@ -9,5 +9,5 @@ export interface InputFiledProps {
   name?: string
   value?: string
   placeholder?: string,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
