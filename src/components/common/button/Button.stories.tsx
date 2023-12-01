@@ -12,6 +12,6 @@ type Story = StoryObj<typeof meta>
 
 export const Base: Story = {
   render: args => (
-    <Button {...args} children="Add" />
+    <Button {...args} classButton="btn" children="Add" />
   )
 }

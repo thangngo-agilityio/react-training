@@ -1,7 +1,9 @@
 
 function Spinner() {
   return (
-    <div className="spinner"></div>
+    <div className="toggle">
+      <div className="spinner"></div>
+    </div>
   )
 }
 

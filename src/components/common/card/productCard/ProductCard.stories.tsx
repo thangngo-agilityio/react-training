@@ -11,7 +11,12 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Base: Story = {
-  render: (args) => (
-    <ProductCard {...args} productImage="https://reviewnhatrang.com.vn/wp-content/uploads/2023/04/bun-dau-mam-tom-nha-trang-2.jpg" productName="Bun dau mam tom" productPrice={2} productQuantity={1} />
-  )
+  args: {
+    product: {
+      id: '0',
+      name: 'Bun dau mam tom',
+      image: "https://reviewnhatrang.com.vn/wp-content/uploads/2023/04/bun-dau-mam-tom-nha-trang-2.jpg", price: 2,
+      quantity: 1
+    }
+  }
 }

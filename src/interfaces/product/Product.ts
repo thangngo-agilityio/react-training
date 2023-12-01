@@ -1,8 +1,13 @@
 export interface ProductProps {
-  productImage?: string
-  productName?: string
-  productPrice?: number
-  productQuantity?: number
+  product: Food
   onClickDel?: React.MouseEventHandler<HTMLButtonElement>
   onClickEdit?: React.MouseEventHandler<HTMLButtonElement>
+}
+
+export interface Food {
+  id: string
+  name: string
+  price: number
+  quantity: number
+  image: string
 }

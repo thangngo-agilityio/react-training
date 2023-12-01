@@ -27,3 +27,8 @@ export const MOCK = {
 export const API_PATH_URL = {
   PRODUCT_URL: '/products'
 }
+
+export const MODAL_TITLE = {
+  ADD: 'Create a new food',
+  EDIT: 'Edit'
+}

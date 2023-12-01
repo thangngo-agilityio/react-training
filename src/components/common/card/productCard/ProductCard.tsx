@@ -1,28 +1,25 @@
 import { ProductProps } from 'interfaces/product/Product'
 import iconDelete from '../../../../assets/icon/icon_del.svg'
+import Button from '@components/common/button/Button'
 
-function ProductCard({ productImage, productName, productPrice, productQuantity, onClickDel, onClickEdit }: ProductProps) {
+function ProductCard({ product, onClickDel, onClickEdit }: ProductProps) {
   return (
     <div className='product-card'>
-      <button className="btn-del" onClick={onClickDel}>
-        <img src={iconDelete} alt="Cross icon" className='icon-del' />
-      </button>
+      <Button classButton='btn-del' onClick={onClickDel} dataId={product.id} children={<img src={iconDelete} alt="Cross icon" className='icon-del' />} />
       <div className="product-wrapper">
         <div className="product-img">
-          <img src={productImage} alt={productName} className='img-item' />
+          <img src={product.image} alt={product.name} className='img-item' />
         </div>
         <div className="product-content">
-          <p className="product-name">{productName}</p>
+          <p className="product-name">{product.name}</p>
           <div className="product-detail">
-            {productPrice}
+            {product.price}
             <div className="separate"></div>
-            {productQuantity} Bowls
+            {product.quantity} Bowls
           </div>
         </div>
       </div>
-      <button className='btn-edit' onClick={onClickEdit}>
-        <p className="edit-text">Edit dish</p>
-      </button>
+      <Button classButton='btn-edit' onClick={onClickEdit} dataId={product.id} children={<p className='edit-text' data-id={product.id}>Edit dish</p>}></Button>
     </div>
   )
 }
