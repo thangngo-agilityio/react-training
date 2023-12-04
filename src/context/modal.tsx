@@ -1,9 +1,9 @@
 import { ReactNode, createContext, useMemo } from "react";
-import { MODAL_TITLE } from "constants/common";
 import { defaultData } from "constants/food";
 import { ModalProps } from "store/modal";
 import { Product } from "interfaces/product/Product";
 import useModal from "@components/hooks/useModal";
+import { MODAL_TITLE } from "constants/common";
 
 interface ModalContextProps {
   mutationModal: ModalProps & {

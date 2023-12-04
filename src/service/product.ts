@@ -1,15 +1,18 @@
-import { Product, ProductCard } from 'interfaces/product/Product';
+import { Product } from 'interfaces/product/Product';
 import HttpsService from './httpsService';
 
-const productService = new HttpsService<Product | ProductCard>('products');
+const productService = new HttpsService<Product>('products');
+
+export const getProduct = async (path: string) => {
+  const listProduct = (await productService.get(path))
+
+  return listProduct
+}
 
 export const mutationProduct = async (inputProduct: Product) => {
   if (inputProduct.id === '') {
-    const food: ProductCard = {
-      name: inputProduct.name,
-      price: Number(inputProduct.price),
-      image: inputProduct.image,
-      quantity: Number(inputProduct.quantity),
+    const food: Product = {
+      ...inputProduct
     };
     return await productService.post(food);
   } else {
