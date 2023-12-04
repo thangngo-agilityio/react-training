@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { DEFAULT_LIMITATION, DEFAULT_PAGINATION } from "constants/filter";
+import { DEFAULT_LIMITATION } from "constants/filter";
 import { getProduct } from "service/product";
 
 function useProduct() {
