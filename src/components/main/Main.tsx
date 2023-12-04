@@ -44,11 +44,21 @@ function MainPage() {
     setMutationShowUp(true, MODAL_TITLE.ADD, defaultData)
   }, [setMutationShowUp])
 
-  const handleCreateProduct = useCallback((e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     mutateProduct(modalProductData)
   }, [mutateProduct, modalProductData])
+
+  const onCancelModal = useCallback(() => {
+    if (modalProductData.id === defaultData.id) {
+      setModalProductData(defaultData);
+    } else {
+      setModalProductData(mutationModal.productData!)
+    }
+
+    setMutationShowUp(false)
+  }, [modalProductData.id, mutationModal.productData, setMutationShowUp])
 
   return (
     <>
@@ -73,7 +83,7 @@ function MainPage() {
 
       {mutationModal.isShowUp && (
         <Suspense fallback={<Spinner />}>
-          <MultiModal title={mutationModal.title} productData={modalProductData} setProductData={setModalProductData} onSubmit={handleCreateProduct} />
+          <MultiModal title={mutationModal.title} productData={modalProductData} setProductData={setModalProductData} onSubmit={onSubmit} onCancelClick={onCancelModal} />
         </Suspense>
       )}
     </>
