@@ -3,7 +3,7 @@ import { useCallback, useReducer } from 'react';
 import { MODAL_ACTION, initialModalState, modalReducer } from 'store/modal';
 
 function useModal() {
-  const [{ mutationModal, loadingShowUp }, dispatch] = useReducer(
+  const [{ mutationModal, loadingShowUp, confirmModal }, dispatch] = useReducer(
     modalReducer,
     initialModalState
   );
@@ -32,11 +32,23 @@ function useModal() {
     [dispatch]
   );
 
+  const setConfirmShowup = useCallback((isShowUp: boolean, dataId?: string) => {
+    dispatch({
+      type: MODAL_ACTION.CONFIRM,
+      payload: {
+        isShowUp,
+        dataId
+      }
+    })
+  }, [dispatch])
+
   return {
     setMutationShowUp,
     mutationModal,
     setLoadingShowUp,
-    loadingShowUp
+    loadingShowUp,
+    confirmModal,
+    setConfirmShowup
   };
 }
 

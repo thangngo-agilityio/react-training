@@ -17,8 +17,11 @@ export interface ModalState {
   mutationModal: ModalProps & {
     productData?: Product;
   };
-
   loadingShowUp: boolean;
+  confirmModal: {
+    isShowUp: boolean
+    dataId: string
+  }
 }
 
 export interface ModalAction {
@@ -37,8 +40,11 @@ export const initialModalState: ModalState = {
     title: MODAL_TITLE.ADD,
     productData: defaultData,
   },
-
   loadingShowUp: false,
+  confirmModal: {
+    isShowUp: false,
+    dataId: ''
+  }
 };
 
 export const modalReducer = (state: ModalState, action: ModalAction) => {
@@ -59,6 +65,15 @@ export const modalReducer = (state: ModalState, action: ModalAction) => {
         ...state,
         loadingShowUp: payload.isShowUp,
       };
+    case MODAL_ACTION.CONFIRM:
+      return {
+        ...state,
+        confirmModal: {
+          ...state.confirmModal,
+          isShowUp: payload.isShowUp,
+          dataId: payload.dataId ?? state.confirmModal.dataId
+        }
+      }
     default:
       return state;
   }
