@@ -6,12 +6,13 @@ interface ButtonProps {
   classButton?: string
   idButton?: string
   dataId?: string
+  type?: 'submit' | 'button'
   onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-function Button({ children, classButton, idButton, dataId, onClick }: ButtonProps) {
+function Button({ children, classButton, idButton, dataId, type, onClick }: ButtonProps) {
   return (
-    <button onClick={onClick} id={idButton} className={classButton} data-id={dataId}>
+    <button type={type} onClick={onClick} id={idButton} className={classButton} data-id={dataId}>
       {children}
     </button>
   )

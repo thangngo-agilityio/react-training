@@ -7,11 +7,12 @@ import { defaultData } from "constants/food"
 interface MultiModalProps {
   title: string
   productData?: Product
+  onCancelClick: () => void
   setProductData: (food: Product) => void
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-function MultiModal({ title, productData = defaultData, setProductData, onSubmit }: MultiModalProps) {
+function MultiModal({ title, productData = defaultData, onCancelClick, setProductData, onSubmit }: MultiModalProps) {
   const onChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setProductData({
@@ -44,8 +45,8 @@ function MultiModal({ title, productData = defaultData, setProductData, onSubmit
             <p id="quantity-error" className="error-message"></p>
           </div>
           <div className="form-btn">
-            <Button children="Cancel" classButton="btn btn-cancel" />
-            <Button children="Save" classButton="btn btn-cancel" />
+            <Button children="Cancel" classButton="btn btn-cancel" onClick={onCancelClick} />
+            <Button type="submit" children="Save" classButton="btn btn-cancel" />
           </div>
         </form>
       </div>

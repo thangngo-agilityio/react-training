@@ -11,12 +11,13 @@ function useProduct() {
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['products'],
-    queryFn: getMoreProducts,
-    getNextPageParam: lastPage => {
+    queryFn: ({ pageParam = DEFAULT_PAGINATION }) => getMoreProducts(pageParam),
+    getNextPageParam: (lastPage) => {
       if (lastPage.data.length < DEFAULT_LIMITATION) return undefined;
 
       return lastPage.pageParams;
     },
+    initialPageParam: 1,
   })
 
   return {

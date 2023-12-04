@@ -7,7 +7,7 @@ import './css/main.css'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 3
+      retry: 3,
     }
   }
 });
