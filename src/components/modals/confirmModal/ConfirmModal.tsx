@@ -5,8 +5,8 @@ function ConfirmModal() {
     <div className="modal-confirm">
       <h2 className="confirm-title">Are you sure you want to delete this food?</h2>
       <div className="confirm-btn">
-        <Button classButton="btn-cancel" idButton="btn-cancel" children="Cancel"/>
-        <Button children="Yes"/>
+        <Button classButton="btn btn-cancel" idButton="btn-cancel" children="Cancel"/>
+        <Button classButton="btn" children="Yes"/>
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { API_HEADERS, HTTP_METHOD, MOCK } from "@/types/service";
+import { API_HEADERS, HTTP_METHOD, MOCK } from "constants/common";
 
 
 /**

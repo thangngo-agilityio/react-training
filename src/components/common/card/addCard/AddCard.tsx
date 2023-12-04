@@ -1,3 +1,4 @@
+import { memo } from "react";
 
 
 interface AddCardProps {
@@ -14,4 +15,4 @@ function AddCard({ onClick }: AddCardProps) {
   )
 }
 
-export default AddCard
+export default memo(AddCard)
