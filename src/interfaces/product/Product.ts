@@ -1,7 +1,7 @@
 export interface ProductProps {
   product: Product
-  onClickDel?: React.MouseEventHandler<HTMLButtonElement>
-  onClickEdit?: React.MouseEventHandler<HTMLButtonElement>
+  onClickDel: (productId: string) => void
+  onClickEdit: (product: Product) => void
 }
 
 export interface Product {
