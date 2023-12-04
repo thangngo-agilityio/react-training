@@ -10,6 +10,7 @@ import { Product } from "interfaces/product/Product"
 import { mutationProduct } from "service/product"
 import useProduct from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
+import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
 
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
@@ -20,7 +21,9 @@ function MainPage() {
   const {
     mutationModal,
     setMutationShowUp,
-    setLoadingShowUp
+    setLoadingShowUp,
+    setConfirmShowup,
+    confirmModal
   } = useContext(ModalContext)
 
 
@@ -71,6 +74,11 @@ function MainPage() {
     setMutationShowUp(false)
   }, [modalProductData.id, mutationModal.productData, setMutationShowUp])
 
+  const onClickDelete = useCallback((productId: string) => {
+    setConfirmShowup(true, productId)
+    console.log(setConfirmShowup(true, productId))
+  }, [setConfirmShowup])
+
   return (
     <>
       <main className="main-content">
@@ -84,6 +92,8 @@ function MainPage() {
                   <ProductCard
                     product={product}
                     key={product.id}
+                    onClickDel={onClickDelete}
+                    onClickEdit={() => { }}
                   />
                 ))}
               </Fragment>
@@ -91,6 +101,12 @@ function MainPage() {
           </div>
         </section>
       </main>
+
+      {confirmModal.isShowUp && (
+        <Suspense fallback={<Spinner />}>
+          <ConfirmModal />
+        </Suspense>
+      )}
 
       {mutationModal.isShowUp && (
         <Suspense fallback={<Spinner />}>

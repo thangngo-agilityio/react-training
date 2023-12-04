@@ -16,6 +16,14 @@ interface ModalContextProps {
   ) => void
   loadingShowUp: boolean
   setLoadingShowUp: (isShowUp: boolean) => void
+  confirmModal: {
+    dataId: string
+    isShowUp: boolean
+  }
+  setConfirmShowup: (
+    isShowUp: boolean,
+    dataId: string
+  ) => void
 }
 
 interface ModalContextProviderProps {
@@ -31,6 +39,11 @@ export const ModalContext = createContext<ModalContextProps>({
   setMutationShowUp: () => { },
   loadingShowUp: false,
   setLoadingShowUp: () => { },
+  confirmModal: {
+    dataId: '',
+    isShowUp: false
+  },
+  setConfirmShowup: () => { }
 })
 
 export const ModalContextProvider = ({ children }: ModalContextProviderProps) => {
@@ -39,14 +52,19 @@ export const ModalContextProvider = ({ children }: ModalContextProviderProps) =>
     setMutationShowUp,
     loadingShowUp,
     setLoadingShowUp,
+    confirmModal,
+    setConfirmShowup
   } = useModal();
 
   const modalContextValue = useMemo(() => ({
     mutationModal,
     setMutationShowUp,
     loadingShowUp,
-    setLoadingShowUp
-  }), [mutationModal, setMutationShowUp, loadingShowUp, setLoadingShowUp])
+    setLoadingShowUp,
+    confirmModal,
+    setConfirmShowup
+  }), [mutationModal, setMutationShowUp, loadingShowUp, setLoadingShowUp, confirmModal,
+    setConfirmShowup])
 
 
   return (

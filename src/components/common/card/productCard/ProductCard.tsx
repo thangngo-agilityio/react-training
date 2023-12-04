@@ -1,11 +1,21 @@
 import { ProductProps } from 'interfaces/product/Product'
 import iconDelete from '../../../../assets/icon/icon_del.svg'
 import Button from '@components/common/button/Button'
+import { memo, useCallback } from 'react'
 
 function ProductCard({ product, onClickDel, onClickEdit }: ProductProps) {
+
+  const onDeleteProduct = useCallback(() => {
+    onClickDel(product.id)
+  }, [onClickDel, product.id])
+
+  const onEditProduct = useCallback(() => {
+    onClickEdit(product)
+  }, [onClickEdit, product])
+
   return (
     <div className='product-card'>
-      <Button classButton='btn-del' onClick={onClickDel} dataId={product.id} children={<img src={iconDelete} alt="Cross icon" className='icon-del' />} />
+      <Button classButton='btn-del' onClick={onDeleteProduct} dataId={product.id} children={<img src={iconDelete} alt="Cross icon" className='icon-del' />} />
       <div className="product-wrapper">
         <div className="product-img">
           <img src={product.image} alt={product.name} className='img-item' />
@@ -19,9 +29,9 @@ function ProductCard({ product, onClickDel, onClickEdit }: ProductProps) {
           </div>
         </div>
       </div>
-      <Button classButton='btn-edit' onClick={onClickEdit} dataId={product.id} children={<p className='edit-text' data-id={product.id}>Edit dish</p>}></Button>
+      <Button classButton='btn-edit' onClick={onEditProduct} dataId={product.id} children={<p className='edit-text' data-id={product.id}>Edit dish</p>}></Button>
     </div>
   )
 }
 
-export default ProductCard
+export default memo(ProductCard)
