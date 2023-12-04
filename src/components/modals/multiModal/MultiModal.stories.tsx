@@ -12,12 +12,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: args => (
-    <MultiModal {...args} title="Create new product" childrenButton="Add" />
+    <MultiModal {...args} title="Create new product" />
   )
 }
 
 export const Secondary: Story = {
   render: args => (
-    <MultiModal {...args} title="Edit" childrenButton="Save" />
+    <MultiModal {...args} title="Edit" />
   )
 }
