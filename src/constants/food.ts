@@ -1,9 +1,9 @@
-import { Food } from "interfaces/product/Product";
+import { Product } from "interfaces/product/Product";
 
-export const defaultData: Food = {
+export const defaultData: Product = {
   id: '',
   name: '',
   price: 0,
   image: '',
-  quantity: 0
+  quantity: 0,
 }

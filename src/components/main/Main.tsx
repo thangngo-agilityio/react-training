@@ -1,29 +1,49 @@
-import { Suspense, useCallback, useContext, useState } from "react"
+import { FormEvent, Suspense, useCallback, useContext, useState } from "react"
 import { ModalContext } from "context/modal"
-import AddCard from "@components/common/card/addCard/AddCard"
 import { MODAL_TITLE } from "constants/common"
 import { defaultData } from "constants/food"
+import AddCard from "@components/common/card/addCard/AddCard"
 import Spinner from "@components/common/spinner/Spinner"
 import MultiModal from "@components/modals/multiModal/MultiModal"
+import { useMutation } from "@tanstack/react-query"
+import { Product } from "interfaces/product/Product"
+import { mutationProduct } from "service/product"
 
 function MainPage() {
-  const [modalFoodData, setModalFoodData] = useState(defaultData)
-
+  const [modalProductData, setModalProductData] = useState(defaultData)
   const {
     mutationModal,
-    setMutationShowUp
+    setMutationShowUp,
+    setLoadingShowUp
   } = useContext(ModalContext)
 
+
+  const { mutate: mutateProduct } = useMutation({
+    mutationFn: (input: Product) => {
+      return mutationProduct(input)
+    },
+
+    onMutate: () => {
+      setLoadingShowUp(true)
+    },
+
+    onSuccess: () => {
+      setLoadingShowUp(false)
+    },
+    onError: () => {
+      setLoadingShowUp(false)
+    }
+  })
 
   const onClickAdd = useCallback(() => {
     setMutationShowUp(true, MODAL_TITLE.ADD, defaultData)
   }, [setMutationShowUp])
 
-  // const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
-  //   e.prevenDefault();
+  const handleCreateProduct = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  //   const validateMessage =
-  // }, [])
+    mutateProduct(modalProductData)
+  }, [mutateProduct, modalProductData])
 
   return (
     <>
@@ -38,7 +58,7 @@ function MainPage() {
 
       {mutationModal.isShowUp && (
         <Suspense fallback={<Spinner />}>
-          <MultiModal title={mutationModal.title} productData={modalFoodData} setProductData={setModalFoodData} onSubmit={() => { }} />
+          <MultiModal title={mutationModal.title} productData={modalProductData} setProductData={setModalProductData} onSubmit={(handleCreateProduct)} />
         </Suspense>
       )}
     </>

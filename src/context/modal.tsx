@@ -2,18 +2,20 @@ import { ReactNode, createContext, useMemo } from "react";
 import { MODAL_TITLE } from "constants/common";
 import { defaultData } from "constants/food";
 import { ModalProps } from "store/modal";
-import { Food } from "interfaces/product/Product";
+import { Product } from "interfaces/product/Product";
 import useModal from "@components/hooks/useModal";
 
 interface ModalContextProps {
   mutationModal: ModalProps & {
-    productData?: Food
+    productData?: Product
   }
   setMutationShowUp: (
     isShowUp: boolean,
     title?: string,
-    productData?: Food
+    productData?: Product
   ) => void
+  loadingShowUp: boolean
+  setLoadingShowUp: (isShowUp: boolean) => void
 }
 
 interface ModalContextProviderProps {
@@ -26,19 +28,25 @@ export const ModalContext = createContext<ModalContextProps>({
     title: MODAL_TITLE.ADD,
     productData: defaultData
   },
-  setMutationShowUp: () => { }
+  setMutationShowUp: () => { },
+  loadingShowUp: false,
+  setLoadingShowUp: () => { },
 })
 
 export const ModalContextProvider = ({ children }: ModalContextProviderProps) => {
   const {
     mutationModal,
-    setMutationShowUp
+    setMutationShowUp,
+    loadingShowUp,
+    setLoadingShowUp,
   } = useModal();
 
   const modalContextValue = useMemo(() => ({
     mutationModal,
-    setMutationShowUp
-  }), [mutationModal, setMutationShowUp])
+    setMutationShowUp,
+    loadingShowUp,
+    setLoadingShowUp
+  }), [mutationModal, setMutationShowUp, loadingShowUp, setLoadingShowUp])
 
 
   return (

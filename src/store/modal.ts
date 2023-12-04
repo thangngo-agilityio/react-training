@@ -1,44 +1,48 @@
-import { MODAL_TITLE } from "constants/common"
-import { defaultData } from "constants/food"
-import { Food } from "interfaces/product/Product"
+import { MODAL_TITLE } from 'constants/common';
+import { defaultData } from 'constants/food';
+import { Product } from 'interfaces/product/Product';
 
 export interface ModalProps {
-  isShowUp: boolean
-  title: string
+  isShowUp: boolean;
+  title: string;
 }
 
 export enum MODAL_ACTION {
   CONFIRM = 'CONFIRM',
   MUTATION = 'MUTATION',
-  LOADING = 'LOADING'
+  LOADING = 'LOADING',
 }
 
 export interface ModalState {
   mutationModal: ModalProps & {
-    productData?: Food
-  }
+    productData?: Product;
+  };
+
+  loadingShowUp: boolean;
 }
 
 export interface ModalAction {
-  type: MODAL_ACTION,
+  type: MODAL_ACTION;
   payload: {
     isShowUp: boolean;
-    title?: string
-    productData?: Food
-    dataId?: string
-  }
+    title?: string;
+    productData?: Product;
+    dataId?: string;
+  };
 }
 
 export const initialModalState: ModalState = {
   mutationModal: {
     isShowUp: false,
     title: MODAL_TITLE.ADD,
-    productData: defaultData
-  }
-}
+    productData: defaultData,
+  },
+
+  loadingShowUp: false,
+};
 
 export const modalReducer = (state: ModalState, action: ModalAction) => {
-  const { type, payload } = action
+  const { type, payload } = action;
 
   switch (type) {
     case MODAL_ACTION.MUTATION:
@@ -47,10 +51,15 @@ export const modalReducer = (state: ModalState, action: ModalAction) => {
         mutationModal: {
           isShowUp: payload.isShowUp,
           title: payload.title ?? state.mutationModal.title,
-          productData: payload.productData ?? state.mutationModal.productData
-        }
-      }
+          productData: payload.productData ?? state.mutationModal.productData,
+        },
+      };
+    case MODAL_ACTION.LOADING:
+      return {
+        ...state,
+        loadingShowUp: payload.isShowUp,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
