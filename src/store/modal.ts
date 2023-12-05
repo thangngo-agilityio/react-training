@@ -57,7 +57,7 @@ export const modalReducer = (state: ModalState, action: ModalAction) => {
         mutationModal: {
           isShowUp: payload.isShowUp,
           title: payload.title ?? state.mutationModal.title,
-          productData: payload.productData ?? state.mutationModal.productData,
+          productData: payload.productData
         },
       };
     case MODAL_ACTION.LOADING:

@@ -1,4 +1,4 @@
-import { ReactElement } from "react"
+import { ReactElement, memo } from "react"
 
 
 interface ButtonProps {
@@ -20,4 +20,4 @@ function Button({ children, classButton, idButton, dataId, type, onClick }: Butt
   )
 }
 
-export default Button
+export default memo(Button)

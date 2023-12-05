@@ -13,7 +13,6 @@ interface ToastProps {
 }
 
 function Toast({ message, isShow, toastType }: ToastProps) {
-  console.log(toastType)
   const toastTypeClass = useMemo(() => toastType.toLowerCase(), [toastType])
 
   const toastIcon = useMemo(() => {
