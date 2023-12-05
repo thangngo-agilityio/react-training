@@ -4,15 +4,21 @@ import HttpsService from './httpsService';
 const productService = new HttpsService<Product>('products');
 
 export const getProduct = async (path: string) => {
-  const listProduct = (await productService.get(path))
+  const listProduct = await productService.get(path);
 
-  return listProduct
-}
+  return listProduct;
+};
+
+export const deleteProductId = async (id: string) => {
+  const product = await productService.delete(id);
+
+  return product;
+};
 
 export const mutationProduct = async (inputProduct: Product) => {
   if (inputProduct.id === '') {
     const food: Product = {
-      ...inputProduct
+      ...inputProduct,
     };
     return await productService.post(food);
   } else {

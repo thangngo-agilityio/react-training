@@ -1,15 +1,15 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { DEFAULT_LIMITATION, DEFAULT_PAGINATION } from "constants/filter";
-import { getProduct } from "service/product";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { DEFAULT_LIMITATION, DEFAULT_PAGINATION } from 'constants/filter';
+import { getProduct } from 'service/product';
 
 function useProduct() {
   const getMoreProducts = async (pageParams: number) => {
-    const result = await getProduct('/' + `${pageParams}`)
+    const result = await getProduct('/' + `${pageParams}`);
 
-    return { data: [...result], pageParams: pageParams + 1 }
-  }
+    return { data: [...result], pageParams: pageParams + 1 };
+  };
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['products'],
     queryFn: ({ pageParam = DEFAULT_PAGINATION }) => getMoreProducts(pageParam),
     getNextPageParam: (lastPage) => {
@@ -18,13 +18,14 @@ function useProduct() {
       return lastPage.pageParams;
     },
     initialPageParam: 1,
-  })
+  });
 
   return {
     productData: data,
     fetchNextPage,
     hasNextPage,
-  }
+    isLoading,
+  };
 }
 
-export default useProduct
+export default useProduct;
