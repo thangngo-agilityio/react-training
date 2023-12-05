@@ -13,11 +13,11 @@ type Story = StoryObj<typeof meta>
 
 export const Success: Story = {
   render: (args) => (
-    <Toast {...args} message="Success" toastType={ToastType.Success} isShow={true} />
+    <Toast {...args} message="Success" toastType={ToastType.SUCCESS} isShow={true} />
   )
 }
 export const Error: Story = {
   render: (args) => (
-    <Toast {...args} message="Error" toastType={ToastType.Error} isShow={true} />
+    <Toast {...args} message="Error" toastType={ToastType.ERROR} isShow={true} />
   )
 }

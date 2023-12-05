@@ -1,5 +1,6 @@
 import InputField from "@components/common/inputField/InputField"
 import Sort from "@components/common/sort/Sort"
+import iconSearch from '../../../src/assets/icon/icon_search.svg'
 
 function Header() {
   return (
@@ -10,7 +11,7 @@ function Header() {
       <nav className="header-nav">
         <div className="nav-heading">
           <form className="form-search">
-            <img src="../../../src/assets/icon/icon_search.svg" className="icon-search" loading="eager" alt="search" />
+            <img src={iconSearch} className="icon-search" loading="eager" alt="search" />
             <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." />
           </form>
         </div>
