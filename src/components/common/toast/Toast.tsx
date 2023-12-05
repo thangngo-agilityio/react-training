@@ -1,5 +1,8 @@
-import { useMemo } from "react"
+// Library
+import { useMemo, memo } from 'react';
+// Store
 import { ToastType } from "store/Toast"
+// Icon image
 import errorIcon from '../../../assets/icon/icon_error.svg'
 import successIcon from '../../../assets/icon/icon_check.svg'
 
@@ -10,10 +13,11 @@ interface ToastProps {
 }
 
 function Toast({ message, isShow, toastType }: ToastProps) {
+  console.log(toastType)
   const toastTypeClass = useMemo(() => toastType.toLowerCase(), [toastType])
 
   const toastIcon = useMemo(() => {
-    if (toastType === ToastType.Error) {
+    if (toastType === ToastType.ERROR) {
       return errorIcon
     } else {
       return successIcon
@@ -30,4 +34,4 @@ function Toast({ message, isShow, toastType }: ToastProps) {
   )
 }
 
-export default Toast
+export default memo(Toast)

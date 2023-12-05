@@ -25,6 +25,7 @@ export const PRODUCT_MESSAGE = {
   ADD_SUCCESS: 'Add product successfully!',
   ADD_FAILED: 'Add product fail!',
   REMOVE_SUCCESS: 'Remove successfully!',
+  REMOVE_ERROR: 'Remove fail!',
   EDIT_SUCCESS: 'Edit successfully!',
   EDIT_FAILED: 'You need to change the value',
 }
