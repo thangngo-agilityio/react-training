@@ -17,12 +17,12 @@ interface ModalContextProps {
   loadingShowUp: boolean
   setLoadingShowUp: (isShowUp: boolean) => void
   confirmModal: {
-    dataId: string
     isShowUp: boolean
+    dataId: string
   }
   setConfirmShowup: (
     isShowUp: boolean,
-    dataId: string
+    dataId?: string
   ) => void
 }
 
@@ -40,8 +40,8 @@ export const ModalContext = createContext<ModalContextProps>({
   loadingShowUp: false,
   setLoadingShowUp: () => { },
   confirmModal: {
-    dataId: '',
-    isShowUp: false
+    isShowUp: false,
+    dataId: ''
   },
   setConfirmShowup: () => { }
 })

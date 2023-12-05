@@ -7,7 +7,7 @@ import Spinner from "@components/common/spinner/Spinner"
 import MultiModal from "@components/modals/multiModal/MultiModal"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Product } from "interfaces/product/Product"
-import { mutationProduct } from "service/product"
+import { deleteProductId, mutationProduct } from "service/product"
 import useProduct from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
@@ -15,7 +15,7 @@ import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
 
-  const { productData } = useProduct()
+  const { productData, isLoading } = useProduct()
   const queryClient = useQueryClient()
 
   const {
@@ -25,7 +25,6 @@ function MainPage() {
     setConfirmShowup,
     confirmModal
   } = useContext(ModalContext)
-
 
   const { mutate: mutateProduct } = useMutation({
     mutationFn: (input: Product) => {
@@ -52,6 +51,34 @@ function MainPage() {
     networkMode: 'always'
   })
 
+  const { mutate: deleteProduct } = useMutation({
+    mutationFn: (id: string) => {
+      return deleteProductId(id)
+    },
+
+    onMutate: () => {
+      setLoadingShowUp(true)
+    },
+
+    onSuccess: () => {
+      setConfirmShowup(false)
+
+      setLoadingShowUp(false)
+    },
+
+    onError: () => {
+      setConfirmShowup(false)
+
+      setLoadingShowUp(false)
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+
+    networkMode: 'always'
+  })
+
   const onClickAdd = useCallback(() => {
     setMutationShowUp(true, MODAL_TITLE.ADD, defaultData)
   }, [setMutationShowUp])
@@ -62,6 +89,13 @@ function MainPage() {
 
     mutateProduct(modalProductData)
   }, [mutateProduct, modalProductData])
+
+  // submit confirm
+  const onConfirm = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    deleteProduct(confirmModal.dataId)
+  }, [deleteProduct, confirmModal.dataId])
 
   // Cancel modal
   const onCancelModal = useCallback(() => {
@@ -74,6 +108,11 @@ function MainPage() {
     setMutationShowUp(false)
   }, [modalProductData.id, mutationModal.productData, setMutationShowUp])
 
+  // Cancel modal confirm
+  const onCancelConfirmModal = useCallback(() => {
+    setConfirmShowup(false)
+  }, [setConfirmShowup])
+
   const onClickDelete = useCallback((productId: string) => {
     setConfirmShowup(true, productId)
     console.log(setConfirmShowup(true, productId))
@@ -84,6 +123,10 @@ function MainPage() {
       <main className="main-content">
         <section className="section-manage">
           <div className="manage-list">
+            {isLoading && (
+              <Spinner />
+            )}
+
             <AddCard onClick={onClickAdd} />
 
             {productData?.pages.map((page, index) => (
@@ -104,7 +147,7 @@ function MainPage() {
 
       {confirmModal.isShowUp && (
         <Suspense fallback={<Spinner />}>
-          <ConfirmModal />
+          <ConfirmModal dataId={confirmModal.dataId} onCancelClick={onCancelConfirmModal} onSubmit={onConfirm} />
         </Suspense>
       )}
 
