@@ -23,6 +23,8 @@ import { PRODUCT_MESSAGE } from "constants/message"
 
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [getIdConfirmModal, setGetIdConfirmModal] = useState('')
 
   const { productData, isLoading } = useProduct()
   const queryClient = useQueryClient()
@@ -32,7 +34,6 @@ function MainPage() {
     setMutationShowUp,
     setLoadingShowUp,
     setConfirmShowup,
-    confirmModal
   } = useContext(ModalContext)
 
   useEffect(() => {
@@ -105,14 +106,14 @@ function MainPage() {
     },
 
     onSuccess: () => {
-      setConfirmShowup(false)
+      setShowConfirmModal(false)
       setLoadingShowUp(false)
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS)
       hideToast()
     },
 
     onError: () => {
-      setConfirmShowup(false)
+      setShowConfirmModal(false)
       setLoadingShowUp(false)
       showToast(PRODUCT_MESSAGE.REMOVE_ERROR, ToastType.ERROR)
       hideToast()
@@ -140,9 +141,8 @@ function MainPage() {
   // submit confirm
   const onConfirm = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    deleteProduct(confirmModal.dataId)
-  }, [deleteProduct, confirmModal.dataId])
+    deleteProduct(getIdConfirmModal)
+  }, [deleteProduct, getIdConfirmModal])
 
   // Cancel modal
   const onCancelModal = useCallback(() => {
@@ -162,9 +162,10 @@ function MainPage() {
 
   // handle click delete product
   const onClickDelete = useCallback((productId: string) => {
-    console.log('click del:', productId)
-    setConfirmShowup(true, productId)
-  }, [setConfirmShowup])
+    console.log(productId)
+    setShowConfirmModal(true)
+    setGetIdConfirmModal(productId)
+  }, [setShowConfirmModal, setGetIdConfirmModal])
 
   // Handle click edit product
   const onClickEditProduct = useCallback((product: Product) => {
@@ -198,9 +199,9 @@ function MainPage() {
         </section>
       </main>
 
-      {confirmModal.isShowUp && (
+      {showConfirmModal && (
         <Suspense fallback={<Spinner />}>
-          <ConfirmModal dataId={confirmModal.dataId} onCancelClick={onCancelConfirmModal} onSubmit={onConfirm} />
+          <ConfirmModal dataId={getIdConfirmModal} onCancelClick={onCancelConfirmModal} onSubmit={onConfirm} />
         </Suspense>
       )}
 
