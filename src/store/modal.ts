@@ -47,6 +47,16 @@ export const initialModalState: ModalState = {
   },
 };
 
+interface ConfirmModalState {
+  isShowUp: boolean;
+  dataId: string;
+}
+
+export const initialConfirmModalState: ConfirmModalState = {
+  isShowUp: false,
+  dataId: '',
+}
+
 export const modalReducer = (state: ModalState, action: ModalAction) => {
   const { type, payload } = action;
 
