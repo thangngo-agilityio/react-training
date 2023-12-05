@@ -4,8 +4,6 @@ import Button from '@components/common/button/Button'
 import { memo, useCallback } from 'react'
 
 function ProductCard({ product, onClickDel, onClickEdit }: ProductProps) {
-  console.log(product)
-
   const onDeleteProduct = useCallback(() => {
     onClickDel(product.id)
   }, [onClickDel, product.id])
