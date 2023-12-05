@@ -12,9 +12,11 @@ interface ButtonProps {
 
 function Button({ children, classButton, idButton, dataId, type, onClick }: ButtonProps) {
   return (
-    <button type={type} onClick={onClick} id={idButton} className={classButton} data-id={dataId}>
-      {children}
-    </button>
+    <>
+      <button type={type} onClick={onClick} id={idButton} className={classButton} data-id={dataId}>
+        {children}
+      </button>
+    </>
   )
 }
 
