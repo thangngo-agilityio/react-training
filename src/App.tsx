@@ -1,17 +1,14 @@
-import Header from "@components/header/Header";
-import MainPage from "@components/main/Main";
 import { ModalContextProvider } from "context/modal";
+import Layout from "@components/layout/Layout";
+import MainPage from "@components/main/Main";
 
 function App() {
 
   return (
     <ModalContextProvider>
-      <div className="container ">
-        <div className="wrapper">
-          <Header />
-          <MainPage />
-        </div>
-      </div>
+      <Layout>
+        <MainPage />
+      </Layout>
     </ModalContextProvider>
   );
 }
