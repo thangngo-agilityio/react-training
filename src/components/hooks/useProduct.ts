@@ -2,6 +2,14 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { DEFAULT_LIMITATION, DEFAULT_PAGINATION } from 'constants/filter';
 import { getProduct } from 'service/product';
 
+export interface InfiniteQueryProps<T> {
+  pages: Array<{
+    data: Array<T>;
+    pageParams: number;
+  }>;
+  pageParams: Array<number>
+}
+
 function useProduct() {
   const getMoreProducts = async (pageParams: number) => {
     const result = await getProduct('/' + `${pageParams}`);
@@ -21,6 +29,7 @@ function useProduct() {
   });
 
   return {
+    // productList
     productData: data,
     fetchNextPage,
     hasNextPage,

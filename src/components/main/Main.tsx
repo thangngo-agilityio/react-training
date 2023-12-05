@@ -1,5 +1,5 @@
 // Library
-import { FormEvent, Fragment, Suspense, useCallback, useContext, useState } from "react"
+import { FormEvent, Fragment, Suspense, useCallback, useContext, useState, useEffect } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 // Context
 import { ModalContext } from "context/modal"
@@ -15,7 +15,7 @@ import { deleteProductId, mutationProduct } from "service/product"
 import AddCard from "@components/common/card/addCard/AddCard"
 import Spinner from "@components/common/spinner/Spinner"
 import MultiModal from "@components/modals/multiModal/MultiModal"
-import useProduct from "@components/hooks/useProduct"
+import useProduct, { InfiniteQueryProps } from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
 import { ToastType } from "store/Toast"
@@ -35,6 +35,12 @@ function MainPage() {
     confirmModal
   } = useContext(ModalContext)
 
+  useEffect(() => {
+    if (mutationModal.productData) {
+      setModalProductData(mutationModal.productData)
+    }
+  }, [mutationModal.productData])
+
   const { showToast, hideToast } = useContext(ToastContext)
 
   const { mutate: mutateProduct } = useMutation({
@@ -46,10 +52,33 @@ function MainPage() {
       setLoadingShowUp(true)
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      const currentProductData = queryClient.getQueryData<InfiniteQueryProps<Product>>(['products'])
+
+      let toastMessage = '';
+      if (currentProductData) {
+        let existedProductIndex = -1;
+
+        for (const productPage of currentProductData.pages) {
+          const foundProductIndex = productPage.data.findIndex((product) => {
+            return product.id === data.id
+          })
+
+          if (foundProductIndex > -1) {
+            existedProductIndex = foundProductIndex
+          }
+        }
+
+        if (existedProductIndex < 0) {
+          toastMessage = PRODUCT_MESSAGE.ADD_SUCCESS
+        } else {
+          toastMessage = PRODUCT_MESSAGE.EDIT_SUCCESS
+        }
+      }
+
       onCancelModal()
       setLoadingShowUp(false)
-      showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS)
+      showToast(toastMessage, ToastType.SUCCESS)
       hideToast()
     },
     onError: () => {
@@ -133,8 +162,14 @@ function MainPage() {
 
   // handle click delete product
   const onClickDelete = useCallback((productId: string) => {
+    console.log('click del:', productId)
     setConfirmShowup(true, productId)
   }, [setConfirmShowup])
+
+  // Handle click edit product
+  const onClickEditProduct = useCallback((product: Product) => {
+    setMutationShowUp(true, MODAL_TITLE.EDIT, product)
+  }, [setMutationShowUp])
 
   return (
     <>
@@ -154,7 +189,7 @@ function MainPage() {
                     product={product}
                     key={product.id}
                     onClickDel={onClickDelete}
-                    onClickEdit={() => { }}
+                    onClickEdit={onClickEditProduct}
                   />
                 ))}
               </Fragment>
