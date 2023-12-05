@@ -7,8 +7,10 @@ function App() {
   return (
     <ModalContextProvider>
       <div className="container ">
-        <Header />
-        <MainPage />
+        <div className="wrapper">
+          <Header />
+          <MainPage />
+        </div>
       </div>
     </ModalContextProvider>
   );

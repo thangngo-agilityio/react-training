@@ -19,9 +19,9 @@ export interface ModalState {
   };
   loadingShowUp: boolean;
   confirmModal: {
-    isShowUp: boolean
-    dataId: string
-  }
+    isShowUp: boolean;
+    dataId: string;
+  };
 }
 
 export interface ModalAction {
@@ -43,8 +43,8 @@ export const initialModalState: ModalState = {
   loadingShowUp: false,
   confirmModal: {
     isShowUp: false,
-    dataId: ''
-  }
+    dataId: '',
+  },
 };
 
 export const modalReducer = (state: ModalState, action: ModalAction) => {
@@ -71,9 +71,9 @@ export const modalReducer = (state: ModalState, action: ModalAction) => {
         confirmModal: {
           ...state.confirmModal,
           isShowUp: payload.isShowUp,
-          dataId: payload.dataId ?? state.confirmModal.dataId
-        }
-      }
+          dataId: payload.dataId ?? state.confirmModal.dataId,
+        },
+      };
     default:
       return state;
   }
