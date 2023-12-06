@@ -2,15 +2,17 @@
 import { FormEvent, Fragment, Suspense, useCallback, useContext, useState, useEffect } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 // Context
-import { ModalContext } from "context/modal"
 import { ToastContext } from "context/toast"
 // Constant
 import { MODAL_TITLE } from "constants/common"
 import { defaultData } from "constants/food"
+import { PRODUCT_MESSAGE } from "constants/message"
 // Types
 import { Product } from "interfaces/product/Product"
 // Service
 import { deleteProductId, mutationProduct } from "service/product"
+// Store
+import { ToastType } from "store/Toast"
 // Component
 import AddCard from "@components/common/card/addCard/AddCard"
 import Spinner from "@components/common/spinner/Spinner"
@@ -18,39 +20,34 @@ import MultiModal from "@components/modals/multiModal/MultiModal"
 import useProduct, { InfiniteQueryProps } from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
-import { ToastType } from "store/Toast"
-import { PRODUCT_MESSAGE } from "constants/message"
 
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [showMutationModal, setShowMutationModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [titleModal, setTitleModal] = useState('')
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('')
 
-  const { productData, isLoading } = useProduct()
+  const { productData } = useProduct()
   const queryClient = useQueryClient()
 
-  const {
-    mutationModal,
-    setMutationShowUp,
-    setLoadingShowUp,
-    setConfirmShowup,
-  } = useContext(ModalContext)
-
   useEffect(() => {
-    if (mutationModal.productData) {
-      setModalProductData(mutationModal.productData)
+    if (modalProductData) {
+      setModalProductData(modalProductData)
     }
-  }, [mutationModal.productData])
+  }, [modalProductData])
 
   const { showToast, hideToast } = useContext(ToastContext)
 
+  // Handle add product and update product
   const { mutate: mutateProduct } = useMutation({
     mutationFn: (input: Product) => {
       return mutationProduct(input)
     },
 
     onMutate: () => {
-      setLoadingShowUp(true)
+      setIsLoading(true)
     },
 
     onSuccess: (data) => {
@@ -78,13 +75,13 @@ function MainPage() {
       }
 
       onCancelModal()
-      setLoadingShowUp(false)
+      setIsLoading(false)
       showToast(toastMessage, ToastType.SUCCESS)
       hideToast()
     },
     onError: () => {
       onCancelModal()
-      setLoadingShowUp(false)
+      setIsLoading(false)
       showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR)
       hideToast()
     },
@@ -96,25 +93,26 @@ function MainPage() {
     networkMode: 'always'
   })
 
+  // Handle delete product
   const { mutate: deleteProduct } = useMutation({
     mutationFn: (id: string) => {
       return deleteProductId(id)
     },
 
     onMutate: () => {
-      setLoadingShowUp(true)
+      setIsLoading(true)
     },
 
     onSuccess: () => {
       setShowConfirmModal(false)
-      setLoadingShowUp(false)
+      setIsLoading(false)
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS)
       hideToast()
     },
 
     onError: () => {
       setShowConfirmModal(false)
-      setLoadingShowUp(false)
+      setIsLoading(false)
       showToast(PRODUCT_MESSAGE.REMOVE_ERROR, ToastType.ERROR)
       hideToast()
     },
@@ -128,8 +126,10 @@ function MainPage() {
 
   // Handle click add product
   const onClickAdd = useCallback(() => {
-    setMutationShowUp(true, MODAL_TITLE.ADD, defaultData)
-  }, [setMutationShowUp])
+    setShowMutationModal(true)
+    setModalProductData(modalProductData)
+    setTitleModal(MODAL_TITLE.ADD)
+  }, [setShowMutationModal, setModalProductData, setTitleModal])
 
   // submit modal
   const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
@@ -149,16 +149,16 @@ function MainPage() {
     if (modalProductData?.id === defaultData.id) {
       setModalProductData(defaultData);
     } else {
-      setModalProductData(mutationModal.productData!)
+      setModalProductData(modalProductData!)
     }
 
-    setMutationShowUp(false)
-  }, [modalProductData.id, mutationModal.productData, setMutationShowUp])
+    setShowMutationModal(false)
+  }, [modalProductData.id, modalProductData, setShowMutationModal])
 
   // Cancel modal confirm
   const onCancelConfirmModal = useCallback(() => {
-    setConfirmShowup(false)
-  }, [setConfirmShowup])
+    setShowConfirmModal(false)
+  }, [setShowConfirmModal])
 
   // handle click delete product
   const onClickDelete = useCallback((productId: string) => {
@@ -169,8 +169,10 @@ function MainPage() {
 
   // Handle click edit product
   const onClickEditProduct = useCallback((product: Product) => {
-    setMutationShowUp(true, MODAL_TITLE.EDIT, product)
-  }, [setMutationShowUp])
+    setShowMutationModal(true)
+    setModalProductData(product)
+    setTitleModal(MODAL_TITLE.EDIT)
+  }, [setShowMutationModal, setModalProductData, setTitleModal])
 
   return (
     <>
@@ -205,9 +207,9 @@ function MainPage() {
         </Suspense>
       )}
 
-      {mutationModal.isShowUp && (
+      {showMutationModal && (
         <Suspense fallback={<Spinner />}>
-          <MultiModal title={mutationModal.title} productData={modalProductData} setProductData={setModalProductData} onSubmit={onSubmit} onCancelClick={onCancelModal} />
+          <MultiModal title={titleModal} productData={modalProductData} setProductData={setModalProductData} onSubmit={onSubmit} onCancelClick={onCancelModal} />
         </Suspense>
       )}
     </>

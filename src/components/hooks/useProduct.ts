@@ -17,7 +17,7 @@ function useProduct() {
     return { data: [...result], pageParams: pageParams + 1 };
   };
 
-  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['products'],
     queryFn: ({ pageParam = DEFAULT_PAGINATION }) => getMoreProducts(pageParam),
     getNextPageParam: (lastPage) => {
@@ -33,7 +33,6 @@ function useProduct() {
     productData: data,
     fetchNextPage,
     hasNextPage,
-    isLoading,
   };
 }
 
