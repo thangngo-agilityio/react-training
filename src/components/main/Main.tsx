@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { ToastContext } from "context/toast"
 // Constant
 import { MODAL_TITLE } from "constants/common"
-import { defaultData } from "constants/food"
+import { defaultData, defaultErrorMessage } from "constants/product"
 import { PRODUCT_MESSAGE } from "constants/message"
 // Types
 import { Product } from "interfaces/product/Product"
@@ -20,9 +20,11 @@ import MultiModal from "@components/modals/multiModal/MultiModal"
 import useProduct, { InfiniteQueryProps } from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
+import { validateForm } from "helpers/validators/validateForm"
 
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
+  const [errorModalMessage, setErrorModalMessage] = useState(defaultErrorMessage)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [showMutationModal, setShowMutationModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -74,13 +76,13 @@ function MainPage() {
         }
       }
 
-      onCancelModal()
+      handleCancelModal()
       setIsLoading(false)
       showToast(toastMessage, ToastType.SUCCESS)
       hideToast()
     },
     onError: () => {
-      onCancelModal()
+      handleCancelModal()
       setIsLoading(false)
       showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR)
       hideToast()
@@ -131,11 +133,18 @@ function MainPage() {
     setTitleModal(MODAL_TITLE.ADD)
   }, [setShowMutationModal, setModalProductData, setTitleModal])
 
-  // submit modal
-  const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
+  // submit modal form
+  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    mutateProduct(modalProductData)
+    const validateMessage = validateForm(modalProductData)
+
+    if (Object.values(validateMessage).join('')) {
+      setErrorModalMessage(validateMessage)
+    } else {
+      mutateProduct(modalProductData)
+    }
+
   }, [mutateProduct, modalProductData])
 
   // submit confirm
@@ -145,12 +154,14 @@ function MainPage() {
   }, [deleteProduct, getIdConfirmModal])
 
   // Cancel modal
-  const onCancelModal = useCallback(() => {
+  const handleCancelModal = useCallback(() => {
     if (modalProductData?.id === defaultData.id) {
       setModalProductData(defaultData);
     } else {
       setModalProductData(modalProductData!)
     }
+
+    setErrorModalMessage(defaultErrorMessage)
 
     setShowMutationModal(false)
   }, [modalProductData.id, modalProductData, setShowMutationModal])
@@ -161,14 +172,14 @@ function MainPage() {
   }, [setShowConfirmModal])
 
   // handle click delete product
-  const onClickDelete = useCallback((productId: string) => {
+  const handleClickDelete = useCallback((productId: string) => {
     console.log(productId)
     setShowConfirmModal(true)
     setGetIdConfirmModal(productId)
   }, [setShowConfirmModal, setGetIdConfirmModal])
 
   // Handle click edit product
-  const onClickEditProduct = useCallback((product: Product) => {
+  const handleClickEditProduct = useCallback((product: Product) => {
     setShowMutationModal(true)
     setModalProductData(product)
     setTitleModal(MODAL_TITLE.EDIT)
@@ -191,8 +202,8 @@ function MainPage() {
                   <ProductCard
                     product={product}
                     key={product.id}
-                    onClickDel={onClickDelete}
-                    onClickEdit={onClickEditProduct}
+                    onClickDel={handleClickDelete}
+                    onClickEdit={handleClickEditProduct}
                   />
                 ))}
               </Fragment>
@@ -209,7 +220,7 @@ function MainPage() {
 
       {showMutationModal && (
         <Suspense fallback={<Spinner />}>
-          <MultiModal title={titleModal} productData={modalProductData} setProductData={setModalProductData} onSubmit={onSubmit} onCancelClick={onCancelModal} />
+          <MultiModal title={titleModal} productData={modalProductData} setProductData={setModalProductData} errorProductMessage={errorModalMessage} onSubmit={handleSubmit} onCancelClick={handleCancelModal} />
         </Suspense>
       )}
     </>
