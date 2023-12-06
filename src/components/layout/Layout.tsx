@@ -1,8 +1,6 @@
 import { ReactNode, useContext } from "react"
-import { ModalContext } from "context/modal"
 import { ToastContext } from "context/toast"
 import Header from "@components/header/Header"
-import Spinner from "@components/common/spinner/Spinner"
 import Toast from "@components/common/toast/Toast"
 
 interface LayoutProps {
@@ -11,7 +9,6 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
 
-  const { loadingShowUp } = useContext(ModalContext)
 
   const { toast } = useContext(ToastContext)
 
@@ -23,9 +20,6 @@ function Layout({ children }: LayoutProps) {
           {children}
         </div>
       </div>
-      {loadingShowUp && (
-        <Spinner />
-      )}
 
       <Toast message={toast.message} toastType={toast.toastType} isShow={toast.isVisible} />
     </>
