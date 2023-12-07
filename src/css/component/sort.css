@@ -2,7 +2,7 @@
   display: flex;
   position: relative;
   width: 162px;
-  padding: 14px 4px;
+  padding: 14px 4px 14px 35px;
   align-items: center;
   background: none;
   color: var(--color-secondary);
@@ -13,6 +13,11 @@
   margin-left: auto;
   cursor: pointer;
   transition: .4s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('../../assets/icon/icon_arrow.svg');
+  background-position: 14px center;
+  background-repeat: no-repeat;
 }
 
 .sort-value:focus-visible {

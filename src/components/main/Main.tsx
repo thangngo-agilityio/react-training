@@ -208,6 +208,12 @@ function MainPage() {
                 ))}
               </Fragment>
             ))}
+
+            {!isLoading && productList?.pages[0].data.length === 0 && (
+              <div className="empty-message">
+                {PRODUCT_MESSAGE.EMPTY_MESSAGE}
+              </div>
+            )}
           </div>
         </section>
       </main>
