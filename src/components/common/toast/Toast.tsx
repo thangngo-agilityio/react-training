@@ -1,5 +1,3 @@
-// Library
-import { useMemo, memo } from 'react';
 // Store
 import { ToastType } from "store/Toast"
 // Icon image
@@ -13,24 +11,15 @@ interface ToastProps {
 }
 
 function Toast({ message, isShow, toastType }: ToastProps) {
-  const toastTypeClass = useMemo(() => toastType.toLowerCase(), [toastType])
-
-  const toastIcon = useMemo(() => {
-    if (toastType === ToastType.ERROR) {
-      return errorIcon
-    } else {
-      return successIcon
-    }
-  }, [toastType])
 
   return (
-    <div style={{ visibility: isShow ? 'visible' : 'hidden', opacity: isShow ? '1' : '0' }} className={`toast ${toastTypeClass}`}>
+    <div style={{ visibility: isShow ? 'visible' : 'hidden', opacity: isShow ? '1' : '0' }} className={`toast ${toastType.toLowerCase()}`}>
       <div className="toast-body">
-        <img src={toastIcon} alt="icon toast" className='toast-icon' />
+        <img src={toastType === ToastType.ERROR ? errorIcon : successIcon} alt="icon toast" className='toast-icon' />
         <p className="toast-message">{message}</p>
       </div>
     </div>
   )
 }
 
-export default memo(Toast)
+export default Toast

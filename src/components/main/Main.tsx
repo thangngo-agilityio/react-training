@@ -1,12 +1,12 @@
 // Library
-import { FormEvent, Fragment, Suspense, useCallback, useContext, useState, useEffect } from "react"
+import { FormEvent, Fragment, Suspense, useContext, useState, useEffect } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 // Context
 import { ToastContext } from "context/toast"
 // Constant
 import { MODAL_TITLE } from "constants/common"
-import { defaultData, defaultErrorMessage } from "constants/product"
 import { PRODUCT_MESSAGE } from "constants/message"
+import { defaultData, defaultErrorMessage } from "constants/product"
 // Types
 import { Product } from "interfaces/product/Product"
 // Service
@@ -15,14 +15,15 @@ import { deleteProductId, mutationProduct } from "service/product"
 import { ToastType } from "store/Toast"
 // helper
 import { validateForm } from "helpers/validators/validateForm"
+// hooks
+import useProduct, { InfiniteQueryProps } from "hooks/useProduct"
 // Component
+import Button from "@components/common/button/Button"
 import AddCard from "@components/common/card/addCard/AddCard"
 import Spinner from "@components/common/spinner/Spinner"
 import MultiModal from "@components/modals/multiModal/MultiModal"
-import useProduct, { InfiniteQueryProps } from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
-import Button from "@components/common/button/Button"
 
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
@@ -129,16 +130,15 @@ function MainPage() {
   })
 
   // Handle click add product
-  const onClickAdd = useCallback(() => {
+  const onClickAdd = () => {
     setShowMutationModal(true)
     setModalProductData(modalProductData)
     setTitleModal(MODAL_TITLE.ADD)
-  }, [setShowMutationModal, setModalProductData, setTitleModal])
+  }
 
   // submit modal form
-  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const validateMessage = validateForm(modalProductData)
 
     if (Object.values(validateMessage).join('')) {
@@ -146,17 +146,16 @@ function MainPage() {
     } else {
       mutateProduct(modalProductData)
     }
-
-  }, [mutateProduct, modalProductData])
+  }
 
   // submit confirm
-  const onConfirm = useCallback((e: FormEvent<HTMLFormElement>) => {
+  const onConfirm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     deleteProduct(getIdConfirmModal)
-  }, [deleteProduct, getIdConfirmModal])
+  }
 
   // Cancel modal
-  const handleCancelModal = useCallback(() => {
+  const handleCancelModal = () => {
     if (modalProductData?.id === defaultData.id) {
       setModalProductData(defaultData);
     } else {
@@ -166,25 +165,25 @@ function MainPage() {
     setErrorModalMessage(defaultErrorMessage)
 
     setShowMutationModal(false)
-  }, [modalProductData.id, modalProductData, setShowMutationModal])
+  }
 
   // Cancel modal confirm
-  const onCancelConfirmModal = useCallback(() => {
+  const onCancelConfirmModal = () => {
     setShowConfirmModal(false)
-  }, [setShowConfirmModal])
+  }
 
   // handle click delete product
-  const handleClickDelete = useCallback((productId: string) => {
+  const handleClickDelete = (productId: string) => {
     setShowConfirmModal(true)
     setGetIdConfirmModal(productId)
-  }, [setShowConfirmModal, setGetIdConfirmModal])
+  }
 
   // Handle click edit product
-  const handleClickEditProduct = useCallback((product: Product) => {
+  const handleClickEditProduct = (product: Product) => {
     setShowMutationModal(true)
     setModalProductData(product)
     setTitleModal(MODAL_TITLE.EDIT)
-  }, [setShowMutationModal, setModalProductData, setTitleModal])
+  }
 
   // Handle click show more
   const handleShowMore = () => {

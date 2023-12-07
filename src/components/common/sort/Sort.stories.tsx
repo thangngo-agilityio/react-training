@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 import Sort from "./Sort";
-import '../../../css/main.css'
+import '../../../assets/css/main.css'
 
 const meta: Meta<typeof Sort> = {
   title: 'COMPONENTS/Common/Sort',

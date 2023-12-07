@@ -1,4 +1,4 @@
-import { FormEvent, memo } from "react"
+import { FormEvent } from "react"
 import Button from "@components/common/button/Button"
 
 interface ConfirmModalProps {
@@ -24,4 +24,4 @@ function ConfirmModal({ dataId, onCancelClick, onSubmit }: ConfirmModalProps) {
   )
 }
 
-export default memo(ConfirmModal)
+export default ConfirmModal
