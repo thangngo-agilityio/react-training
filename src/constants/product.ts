@@ -6,6 +6,7 @@ export const defaultData: Product = {
   price: 0,
   image: '',
   quantity: 0,
+  createdAt: new Date()
 }
 
 export interface ProductErrorMessage {

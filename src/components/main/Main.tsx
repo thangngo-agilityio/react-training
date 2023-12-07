@@ -22,17 +22,18 @@ import MultiModal from "@components/modals/multiModal/MultiModal"
 import useProduct, { InfiniteQueryProps } from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
+import Button from "@components/common/button/Button"
 
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
   const [errorModalMessage, setErrorModalMessage] = useState(defaultErrorMessage)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [showMutationModal, setShowMutationModal] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingShow, setIsLoading] = useState(false)
   const [titleModal, setTitleModal] = useState('')
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('')
 
-  const { productList } = useProduct()
+  const { productList, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useProduct()
   const queryClient = useQueryClient()
 
   useEffect(() => {
@@ -185,6 +186,11 @@ function MainPage() {
     setTitleModal(MODAL_TITLE.EDIT)
   }, [setShowMutationModal, setModalProductData, setTitleModal])
 
+  // Handle click show more
+  const handleShowMore = () => {
+    fetchNextPage()
+  }
+
   return (
     <>
       <main className="main-content">
@@ -196,7 +202,7 @@ function MainPage() {
 
             <AddCard onClick={onClickAdd} />
 
-            {productList?.pages.map((page, index) => (
+            {productList?.pages?.map((page, index) => (
               <Fragment key={index}>
                 {page?.data.map(product => (
                   <ProductCard
@@ -209,12 +215,17 @@ function MainPage() {
               </Fragment>
             ))}
 
-            {!isLoading && productList?.pages[0].data.length === 0 && (
+            {!isLoadingShow && productList?.pages[0].data.length === 0 && (
               <div className="empty-message">
                 {PRODUCT_MESSAGE.EMPTY_MESSAGE}
               </div>
             )}
           </div>
+          <Button classButton="btn btn-expand" isVisible={hasNextPage} isDisabled={isFetchingNextPage} onClick={handleShowMore} >
+            {isFetchingNextPage ? (
+              <div className="expand-loading"></div>
+            ) : 'SHOW MORE'}
+          </Button>
         </section>
       </main>
 
