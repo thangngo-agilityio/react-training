@@ -13,6 +13,8 @@ import { Product } from "interfaces/product/Product"
 import { deleteProductId, mutationProduct } from "service/product"
 // Store
 import { ToastType } from "store/Toast"
+// helper
+import { validateForm } from "helpers/validators/validateForm"
 // Component
 import AddCard from "@components/common/card/addCard/AddCard"
 import Spinner from "@components/common/spinner/Spinner"
@@ -20,7 +22,6 @@ import MultiModal from "@components/modals/multiModal/MultiModal"
 import useProduct, { InfiniteQueryProps } from "@components/hooks/useProduct"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
-import { validateForm } from "helpers/validators/validateForm"
 
 function MainPage() {
   const [modalProductData, setModalProductData] = useState(defaultData)
@@ -31,7 +32,7 @@ function MainPage() {
   const [titleModal, setTitleModal] = useState('')
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('')
 
-  const { productData } = useProduct()
+  const { productList } = useProduct()
   const queryClient = useQueryClient()
 
   useEffect(() => {
@@ -195,7 +196,7 @@ function MainPage() {
 
             <AddCard onClick={onClickAdd} />
 
-            {productData?.pages.map((page, index) => (
+            {productList?.pages.map((page, index) => (
               <Fragment key={index}>
                 {page?.data.map(product => (
                   <ProductCard

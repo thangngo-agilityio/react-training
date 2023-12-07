@@ -37,7 +37,7 @@ function useProduct() {
 
   return {
     // productList
-    productData: data,
+    productList: data,
     fetchNextPage,
     hasNextPage,
     refetch,
