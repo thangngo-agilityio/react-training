@@ -173,7 +173,6 @@ function MainPage() {
 
   // handle click delete product
   const handleClickDelete = useCallback((productId: string) => {
-    console.log(productId)
     setShowConfirmModal(true)
     setGetIdConfirmModal(productId)
   }, [setShowConfirmModal, setGetIdConfirmModal])
