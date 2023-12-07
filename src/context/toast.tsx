@@ -1,9 +1,9 @@
 // Library
-import { createContext, ReactNode, useMemo } from 'react';
+import { createContext, ReactNode } from 'react';
 // Store
 import { ToastType } from 'store/Toast'
 // Custom hooks
-import useToast from '@components/hooks/useToast'
+import useToast from 'hooks/useToast'
 
 interface ToastContextProps {
   toast: {
@@ -32,9 +32,9 @@ interface ToastContextProviderProps {
 export const ToastContextProvider = (({ children }: ToastContextProviderProps) => {
   const { toast, showToast, hideToast } = useToast()
 
-  const toastContextValue = useMemo(() => ({
+  const toastContextValue = {
     toast, showToast, hideToast
-  }), [toast, showToast, hideToast])
+  }
 
   return (
     <ToastContext.Provider value={toastContextValue}>

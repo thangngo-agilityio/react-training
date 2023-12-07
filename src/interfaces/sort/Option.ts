@@ -2,6 +2,6 @@ import { ReactNode } from 'react';
 
 export interface SortOptionProps {
   value?: string
-  children: ReactNode
+  children?: ReactNode
   disabled?: boolean
 }
