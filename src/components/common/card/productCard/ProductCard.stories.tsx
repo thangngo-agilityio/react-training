@@ -16,7 +16,8 @@ export const Base: Story = {
       id: '0',
       name: 'Bun dau mam tom',
       image: "https://reviewnhatrang.com.vn/wp-content/uploads/2023/04/bun-dau-mam-tom-nha-trang-2.jpg", price: 2,
-      quantity: 1
+      quantity: 1,
+      createdAt: new Date()
     }
   }
 }

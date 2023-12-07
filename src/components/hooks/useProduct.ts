@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { DEFAULT_LIMITATION, DEFAULT_PAGINATION } from 'constants/filter';
+import { DEFAULT_LIMITATION, DEFAULT_PAGINATION, FILTER_ATTRIBUTE } from 'constants/filter';
 import { getProduct } from 'service/product';
 import { useState } from 'react';
 
@@ -14,8 +14,9 @@ export interface InfiniteQueryProps<T> {
 
 function useProduct() {
   const [searchName, setSearchName] = useState('')
+  const [sortValue, setSortValue] = useState(FILTER_ATTRIBUTE.DEFAULT)
 
-  const path = `name=${searchName}&page=`
+  const path = `name=${searchName}&${sortValue}&limit=${DEFAULT_LIMITATION}&page=`
 
   const getMoreProducts = async (pageParams: number) => {
     const result = await getProduct(path + `${pageParams}`);
@@ -24,7 +25,7 @@ function useProduct() {
   };
 
 
-  const { data, refetch, fetchNextPage, hasNextPage, isRefetching } = useInfiniteQuery({
+  const { data, refetch, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, isRefetching } = useInfiniteQuery({
     queryKey: ['products'],
     queryFn: ({ pageParam = DEFAULT_PAGINATION }) => getMoreProducts(pageParam),
     getNextPageParam: (lastPage) => {
@@ -32,19 +33,23 @@ function useProduct() {
 
       return lastPage.pageParams;
     },
+    refetchOnWindowFocus: false,
     initialPageParam: 1,
   });
 
   return {
-    // productList
     productList: data,
-    fetchNextPage,
     hasNextPage,
+    isFetchingNextPage,
+    isRefetching,
+    isLoading,
+    fetchNextPage,
     refetch,
     setSearchName,
+    setSortValue,
     searchName,
+    sortValue,
     path,
-    isRefetching
   };
 }
 
