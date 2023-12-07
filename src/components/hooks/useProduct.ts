@@ -15,13 +15,14 @@ export interface InfiniteQueryProps<T> {
 function useProduct() {
   const [searchName, setSearchName] = useState('')
 
-  const path = `?name=${searchName}&page=`
+  const path = `name=${searchName}&page=`
 
   const getMoreProducts = async (pageParams: number) => {
     const result = await getProduct(path + `${pageParams}`);
 
     return { data: [...result], pageParams: pageParams + 1 };
   };
+
 
   const { data, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['products'],
@@ -40,7 +41,9 @@ function useProduct() {
     fetchNextPage,
     hasNextPage,
     refetch,
-    setSearchName
+    setSearchName,
+    searchName,
+    path
   };
 }
 

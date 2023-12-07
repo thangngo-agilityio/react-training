@@ -1,20 +1,24 @@
 import InputField from "@components/common/inputField/InputField"
 import Sort from "@components/common/sort/Sort"
 import iconSearch from '../../../src/assets/icon/icon_search.svg'
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import useProduct from "@components/hooks/useProduct"
 
 function Header() {
-  const [searchInput, setSearchInput] = useState('')
-  const { refetch } = useProduct()
+  const { setSearchName, searchName, path, refetch } = useProduct()
 
   useEffect(() => {
+    console.log(path)
     refetch()
-    setSearchInput(searchInput)
-  }, [searchInput, refetch])
+    setSearchName(searchName)
+  }, [searchName, path, refetch])
+
+  useEffect(() => {
+    setSearchName(searchName)
+  }, [searchName, setSearchName])
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value)
+    setSearchName(e.target.value)
   }
 
   return (
@@ -26,7 +30,7 @@ function Header() {
         <div className="nav-heading">
           <form className="form-search">
             <img src={iconSearch} className="icon-search" loading="eager" alt="search" />
-            <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." value={searchInput} onChange={handleSearch} />
+            <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." value={searchName} onChange={handleSearch} />
           </form>
         </div>
         <Sort selectOptions={
