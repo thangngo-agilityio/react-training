@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from "react"
+import { ReactNode, useContext } from 'react';
 import { ToastContext } from "context/toast"
 import Header from "@components/header/Header"
 import Toast from "@components/common/toast/Toast"
@@ -8,8 +8,6 @@ interface LayoutProps {
 }
 
 function Layout({ children }: LayoutProps) {
-
-
   const { toast } = useContext(ToastContext)
 
   return (
