@@ -1,16 +1,15 @@
 import { ProductProps } from 'interfaces/product/Product'
 import iconDelete from '../../../../assets/icon/icon_del.svg'
 import Button from '@components/common/button/Button'
-import { memo, useCallback } from 'react'
 
 function ProductCard({ product, onClickDel, onClickEdit }: ProductProps) {
-  const onDeleteProduct = useCallback(() => {
+  const onDeleteProduct = () => {
     onClickDel(product.id)
-  }, [onClickDel, product.id])
+  }
 
-  const onEditProduct = useCallback(() => {
+  const onEditProduct = () => {
     onClickEdit(product)
-  }, [onClickEdit, product])
+  }
 
   return (
     <div className='product-card'>
@@ -33,4 +32,4 @@ function ProductCard({ product, onClickDel, onClickEdit }: ProductProps) {
   )
 }
 
-export default memo(ProductCard)
+export default ProductCard

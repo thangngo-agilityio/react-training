@@ -1,6 +1,3 @@
-import { memo } from "react";
-
-
 interface AddCardProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
@@ -17,4 +14,4 @@ function AddCard({ onClick }: AddCardProps) {
   )
 }
 
-export default memo(AddCard)
+export default AddCard

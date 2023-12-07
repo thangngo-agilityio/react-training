@@ -1,5 +1,4 @@
-import { memo, ReactNode } from 'react';
-
+import { ReactNode } from 'react';
 
 interface ButtonProps {
   children?: ReactNode
@@ -24,4 +23,4 @@ function Button({ children, classButton, idButton, dataId, type, isVisible = tru
   )
 }
 
-export default memo(Button)
+export default Button

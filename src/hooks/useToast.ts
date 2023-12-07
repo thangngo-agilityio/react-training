@@ -1,14 +1,14 @@
 // library
-import { useReducer, useMemo, useCallback } from 'react';
+import { useReducer } from 'react';
 // Store
 import { TOAST_ACTION, ToastType, initialToastState, toastReducer } from 'store/Toast';
 
 function useToast() {
   const [toast, dispatch] = useReducer(toastReducer, initialToastState)
 
-  const { message, toastType, isVisible } = useMemo(() => toast, [toast])
+  const { message, toastType, isVisible } = toast
 
-  const showToast = useCallback((message: string, toastType: ToastType) => {
+  const showToast = (message: string, toastType: ToastType) => {
     dispatch({
       type: TOAST_ACTION.TOAST,
       payload: {
@@ -17,9 +17,9 @@ function useToast() {
         isVisible: true
       }
     })
-  }, [dispatch])
+  }
 
-  const hideToast = useCallback(() => {
+  const hideToast = () => {
     setTimeout(() => {
       dispatch({
         type: TOAST_ACTION.TOAST,
@@ -29,7 +29,7 @@ function useToast() {
         }
       })
     }, 2500)
-  }, [dispatch, toastType])
+  }
 
   return {
     toast: {

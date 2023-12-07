@@ -1,4 +1,4 @@
-import { FormEvent, memo, useCallback } from "react"
+import { FormEvent } from "react"
 import Button from "@components/common/button/Button"
 import InputField from "@components/common/inputField/InputField"
 import { Product } from "interfaces/product/Product"
@@ -14,13 +14,13 @@ interface MultiModalProps {
 }
 
 function MultiModal({ title, productData = defaultData, errorProductMessage = defaultErrorMessage, onCancelClick, setProductData, onSubmit }: MultiModalProps) {
-  const onChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setProductData({
       ...productData,
       [e.target.name]: value
     })
-  }, [productData, setProductData])
+  }
 
   return (
     <div className="modal-overlay">
@@ -57,4 +57,4 @@ function MultiModal({ title, productData = defaultData, errorProductMessage = de
   )
 }
 
-export default memo(MultiModal)
+export default MultiModal

@@ -1,9 +1,13 @@
+// Library
 import { useEffect, useState } from 'react';
+// Constants
 import { FILTER_ATTRIBUTE } from "constants/filter";
-import InputField from "@components/common/inputField/InputField"
+// Hooks
+import useProduct from "hooks/useProduct"
+// Components
 import Sort from "@components/common/sort/Sort"
-import useProduct from "@components/hooks/useProduct"
 import Spinner from "@components/common/spinner/Spinner";
+import InputField from "@components/common/inputField/InputField"
 import iconSearch from '../../../src/assets/icon/icon_search.svg'
 
 function Header() {

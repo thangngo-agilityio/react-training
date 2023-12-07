@@ -1,4 +1,3 @@
-import { memo } from "react"
 import { InputFiledProps } from "interfaces/input/InputField"
 
 function InputField({ htmlFor, labelClass, label, inputClass, name, value, placeholder, type, onChange }: InputFiledProps) {
@@ -20,5 +19,5 @@ function InputField({ htmlFor, labelClass, label, inputClass, name, value, place
   )
 }
 
-export default memo(InputField)
+export default InputField
 
