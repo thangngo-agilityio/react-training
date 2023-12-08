@@ -15,7 +15,7 @@
   transition: .4s;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url('../../assets/icon/icon_arrow.svg');
+  background-image: url('../../icon/icon_arrow.svg');
   background-position: 14px center;
   background-repeat: no-repeat;
 }
