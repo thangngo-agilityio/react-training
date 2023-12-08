@@ -1,33 +1,26 @@
 // library
-import { useReducer } from 'react';
-// Store
-import { TOAST_ACTION, ToastType, initialToastState, toastReducer } from 'store/Toast';
+import { useState } from 'react';
+
+export enum ToastType {
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR'
+}
 
 function useToast() {
-  const [toast, dispatch] = useReducer(toastReducer, initialToastState)
-
-  const { message, toastType, isVisible } = toast
+  const [message, setMessage] = useState('')
+  const [toastType, setToastType] = useState(ToastType.SUCCESS)
+  const [isVisible, setIsVisible] = useState(false)
 
   const showToast = (message: string, toastType: ToastType) => {
-    dispatch({
-      type: TOAST_ACTION.TOAST,
-      payload: {
-        message,
-        toastType,
-        isVisible: true
-      }
-    })
+    setMessage(message);
+    setIsVisible(true);
+    setToastType(toastType)
   }
 
   const hideToast = () => {
     setTimeout(() => {
-      dispatch({
-        type: TOAST_ACTION.TOAST,
-        payload: {
-          toastType,
-          isVisible: false
-        }
-      })
+      setIsVisible(false);
+      toastType
     }, 2500)
   }
 
