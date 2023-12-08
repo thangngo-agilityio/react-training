@@ -19,7 +19,6 @@
   font-weight: 600;
   transition: .4s;
   position: relative;
-  top: 22px;
 }
 
 .manage-title::before,
