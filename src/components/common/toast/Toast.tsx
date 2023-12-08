@@ -1,8 +1,8 @@
-// Store
-import { ToastType } from "store/Toast"
+
 // Icon image
 import errorIcon from '../../../assets/icon/icon_error.svg'
 import successIcon from '../../../assets/icon/icon_check.svg'
+import { ToastType } from 'hooks/useToast'
 
 interface ToastProps {
   message: string
