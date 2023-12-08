@@ -14,7 +14,7 @@ import { deleteProductId, mutationProduct } from "service/product"
 // Store
 import { ToastType } from "store/Toast"
 // helper
-import { validateForm } from "helpers/validators/validateForm"
+import { validateForm } from "helpers/validateForm"
 // hooks
 import useProduct, { InfiniteQueryProps } from "hooks/useProduct"
 // Component
