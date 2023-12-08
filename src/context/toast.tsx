@@ -1,9 +1,7 @@
 // Library
 import { createContext, ReactNode } from 'react';
-// Store
-import { ToastType } from 'store/Toast'
 // Custom hooks
-import useToast from 'hooks/useToast'
+import useToast, { ToastType } from 'hooks/useToast'
 
 interface ToastContextProps {
   toast: {

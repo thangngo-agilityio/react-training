@@ -11,12 +11,11 @@ import { defaultData, defaultErrorMessage } from "constants/product"
 import { Product } from "interfaces/product/Product"
 // Service
 import { deleteProductId, mutationProduct } from "service/product"
-// Store
-import { ToastType } from "store/Toast"
 // helper
 import { validateForm } from "helpers/validateForm"
 // hooks
 import useProduct, { InfiniteQueryProps } from "hooks/useProduct"
+import { ToastType } from "hooks/useToast"
 // Component
 import Button from "@components/common/button/Button"
 import AddCard from "@components/common/card/addCard/AddCard"
