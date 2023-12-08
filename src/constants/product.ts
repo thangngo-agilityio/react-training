@@ -10,10 +10,10 @@ export const defaultData: Product = {
 }
 
 export interface ProductErrorMessage {
-  name: string;
-  price: string
-  image: string
-  quantity: string
+  name?: string;
+  price?: string
+  image?: string
+  quantity?: string
 }
 
 export const defaultErrorMessage: ProductErrorMessage = {
