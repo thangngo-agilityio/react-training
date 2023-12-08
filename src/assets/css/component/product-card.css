@@ -142,12 +142,12 @@
 
 .edit-text::before {
   opacity: 1;
-  background: url('../../assets/icon/icon_edit.svg') center/cover no-repeat;
+  background: url('../../icon/icon_edit.svg') center/cover no-repeat;
 }
 
 .edit-text::after {
   opacity: 0;
-  background: url('../../assets/icon/icon_edit_white.svg') center/cover no-repeat;
+  background: url('../../icon/icon_edit_white.svg') center/cover no-repeat;
 }
 
 .btn-edit:hover .edit-text::before {
