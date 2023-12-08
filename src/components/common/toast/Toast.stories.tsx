@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import Toast from "./Toast";
-import { ToastType } from "store/Toast";
+import { ToastType } from "hooks/useToast";
+
 
 const meta: Meta<typeof Toast> = {
   title: 'COMPONENTS/Common/Toast',
