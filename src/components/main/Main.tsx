@@ -23,24 +23,31 @@ import useProduct from "hooks/useProduct"
 import { ToastType } from "hooks/useToast"
 
 // Component
-import Button from "@components/common/button/Button"
+// import Button from "@components/common/button/Button"
 import AddCard from "@components/common/card/addCard/AddCard"
 import Spinner from "@components/common/spinner/Spinner"
 import MultiModal from "@components/modals/multiModal/MultiModal"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
-import { DEFAULT_PAGINATION } from "constants/filter"
+import Header from "@components/header/Header"
+import Button from "@components/common/button/Button"
 
 const MainPage = () => {
-  const { getList, getProductList } = useProduct()
+  // useProduct
+  const { productList, getProductList, queryPram, searchName, sortValue, setSearchName, setSortValue, setLimitProduct, limitProduct } = useProduct()
 
-  const [modalProductData, setModalProductData] = useState(defaultData)
+  // useContext
+  const { showToast, hideToast } = useContext(ToastContext)
+
+  // useState
   const [errorModalMessage, setErrorModalMessage] = useState(defaultErrorMessage)
-  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [modalProductData, setModalProductData] = useState(defaultData)
   const [showMutationModal, setShowMutationModal] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
-  const [titleModal, setTitleModal] = useState('')
+  const [disableBtn, setDisableBtn] = useState(false)
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('')
+  const [titleModal, setTitleModal] = useState('')
 
 
   useEffect(() => {
@@ -50,25 +57,26 @@ const MainPage = () => {
   }, [modalProductData])
 
   useEffect(() => {
-    getProductList(DEFAULT_PAGINATION);
-  }, []);
-
-  const { showToast, hideToast } = useContext(ToastContext)
-
+    setSearchName(searchName)
+    setSortValue(sortValue)
+    setLimitProduct(limitProduct)
+    getProductList(queryPram)
+  }, [searchName, sortValue, limitProduct, setSortValue, setSearchName, setLimitProduct])
 
   const mutateProduct = async (input: Product): Promise<void> => {
     try {
       if (input.id === '') {
         setIsLoading((prev) => !prev)
         await addProduct(input)
-        await getProductList(DEFAULT_PAGINATION)
+        await getProductList(queryPram)
+        console.log(await getProductList(queryPram))
         handleCancelModal()
         showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS)
         hideToast()
       } else {
         setIsLoading((prev) => !prev)
         await updateProduct(input)
-        await getProductList(DEFAULT_PAGINATION)
+        await getProductList(queryPram)
         handleCancelModal()
         showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS)
         hideToast()
@@ -86,7 +94,7 @@ const MainPage = () => {
     try {
       setIsLoading((prev) => !prev)
       await deleteProductId(id)
-      await getProductList(DEFAULT_PAGINATION)
+      await getProductList(queryPram)
       setShowConfirmModal(false)
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS)
       hideToast()
@@ -126,14 +134,8 @@ const MainPage = () => {
 
   // Cancel modal
   const handleCancelModal = () => {
-    if (modalProductData?.id === defaultData.id) {
-      setModalProductData(defaultData);
-    } else {
-      setModalProductData(modalProductData!)
-    }
-
+    setModalProductData(defaultData);
     setErrorModalMessage(defaultErrorMessage)
-
     setShowMutationModal(false)
   }
 
@@ -156,12 +158,31 @@ const MainPage = () => {
   }
 
   // Handle click show more
-  // const handleShowMore = () => {
-  //   fetchNextPage()
-  // }
+  const handleShowMore = async () => {
+    try {
+      setDisableBtn((prev) => !prev)
+      if (productList.length < queryPram.limit) {
+        return setDisableBtn((prev) => !prev)
+      }
+      setLimitProduct((prev) => prev + 9)
+      await getProductList(queryPram)
+    } catch {
+      showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR)
+    }
+    setDisableBtn((prev) => !prev)
+  }
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchName(e.target.value)
+  }
+
+  const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortValue(e.target.value)
+  }
 
   return (
     <>
+      <Header handleChangeSort={handleChangeSort} handleChangeSearch={handleChangeSearch} searchValue={searchName} sortValue={sortValue} />
       <main className="main-content">
         <section className="section-manage">
           <div className="manage-list">
@@ -171,7 +192,7 @@ const MainPage = () => {
 
             <AddCard onClick={onClickAdd} />
 
-            {getList.map((product, index) => (
+            {productList.map((product, index) => (
               <Fragment key={index}>
                 <ProductCard
                   product={product}
@@ -182,17 +203,17 @@ const MainPage = () => {
               </Fragment>
             ))}
 
-            {!isLoading && getList?.length === 0 && (
+            {!isLoading && productList?.length === 0 && (
               <div className="empty-message">
                 {PRODUCT_MESSAGE.EMPTY_MESSAGE}
               </div>
             )}
           </div>
-          {/* {hasNextPage && (<Button classButton="btn btn-expand" isDisabled={isFetchingNextPage} onClick={handleShowMore} >
-            {isFetchingNextPage ? (
+          {productList?.length === limitProduct && (<Button classButton="btn btn-expand" isDisabled={disableBtn} onClick={handleShowMore} >
+            {disableBtn ? (
               <div className="expand-loading"></div>
             ) : 'SHOW MORE'}
-          </Button>)} */}
+          </Button>)}
         </section>
       </main>
 
