@@ -5,12 +5,28 @@
 }
 
 .manage-list {
-  padding: 0 calc(65px - 42px);
+  padding: 0 calc(65px - 52px) 0 calc(65px - 42px);
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   position: relative;
   margin-bottom: 30px;
+  height: 630px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  transition: .4s;
+}
+.manage-list::-webkit-scrollbar {
+  width: 10px;
+}
+.manage-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.manage-list::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.manage-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .btn-expand {

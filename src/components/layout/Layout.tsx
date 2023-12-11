@@ -1,24 +1,20 @@
 // Library
-import { ReactNode, useContext } from 'react';
+import { useContext } from 'react';
 // Context
 import { ToastContext } from "context/toast"
 // components
-import Header from "@components/header/Header"
 import Toast from "@components/common/toast/Toast"
+import MainPage from '@components/main/Main';
 
-interface LayoutProps {
-  children: ReactNode
-}
 
-function Layout({ children }: LayoutProps) {
+const Layout = () => {
   const { toast } = useContext(ToastContext)
 
   return (
     <>
       <div className="container">
         <div className="wrapper">
-          <Header />
-          {children}
+          <MainPage />
         </div>
       </div>
 

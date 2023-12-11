@@ -1,56 +1,49 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { DEFAULT_LIMITATION, DEFAULT_PAGINATION, FILTER_ATTRIBUTE } from 'constants/filter';
 import { getProduct } from 'service/product';
 import { useState } from 'react';
+import { Product } from 'interfaces/product/Product';
 
-export interface InfiniteQueryProps<T> {
-  pages: Array<{
-    data: Array<T>;
-    pageParams: number;
-  }>;
-  pageParams: Array<number>
+export type QueryPramsType = {
+  page: number,
+  limit: number,
+  sortBy: string,
+  searchValue: string
 }
 
 
-function useProduct() {
-  const [searchName, setSearchName] = useState('')
-  const [sortValue, setSortValue] = useState(FILTER_ATTRIBUTE.DEFAULT)
+const useProduct = () => {
+  const [searchName, setSearchName] = useState('');
+  const [limitProduct, setLimitProduct] = useState(DEFAULT_LIMITATION)
+  const [sortValue, setSortValue] = useState(FILTER_ATTRIBUTE.DEFAULT);
+  const [productList, setProductList] = useState<Product[]>([]);
 
-  const path = `name=${searchName}&${sortValue}&limit=${DEFAULT_LIMITATION}&page=`
+  const queryPram: QueryPramsType = {
+    page: DEFAULT_PAGINATION,
+    limit: limitProduct,
+    sortBy: sortValue,
+    searchValue: searchName
+  }
 
-  const getMoreProducts = async (pageParams: number) => {
-    const result = await getProduct(path + `${pageParams}`);
-
-    return { data: [...result], pageParams: pageParams + 1 };
+  const getProductList = async (queryPrams: QueryPramsType) => {
+    const path = `name=${queryPrams.searchValue}&${queryPrams.sortBy}&limit=${queryPrams.limit}&page=${queryPrams.page}`
+    const result = await getProduct(path);
+    console.log('result', result)
+    setProductList(result);
+    return result
   };
-
-
-  const { data, refetch, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, isRefetching } = useInfiniteQuery({
-    queryKey: ['products'],
-    queryFn: ({ pageParam = DEFAULT_PAGINATION }) => getMoreProducts(pageParam),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data.length < DEFAULT_LIMITATION) return undefined;
-
-      return lastPage.pageParams;
-    },
-    refetchOnWindowFocus: false,
-    initialPageParam: 1,
-  });
 
   return {
-    productList: data,
-    hasNextPage,
-    isFetchingNextPage,
-    isRefetching,
-    isLoading,
-    fetchNextPage,
-    refetch,
+    productList,
+    setLimitProduct,
+    setProductList,
+    getProductList,
     setSearchName,
     setSortValue,
+    limitProduct,
     searchName,
     sortValue,
-    path,
+    queryPram,
   };
-}
+};
 
 export default useProduct;

@@ -2,7 +2,7 @@ import { ProductProps } from 'interfaces/product/Product'
 import iconDelete from '../../../../assets/icon/icon_del.svg'
 import Button from '@components/common/button/Button'
 
-function ProductCard({ product, onClickDel, onClickEdit }: ProductProps) {
+const ProductCard = ({ product, onClickDel, onClickEdit }: ProductProps) => {
   const onDeleteProduct = () => {
     onClickDel(product.id)
   }

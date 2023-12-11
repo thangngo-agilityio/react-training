@@ -1,40 +1,54 @@
 // Library
 import { FormEvent, Fragment, Suspense, useContext, useState, useEffect } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+
 // Context
 import { ToastContext } from "context/toast"
+
 // Constant
 import { MODAL_TITLE } from "constants/common"
 import { PRODUCT_MESSAGE } from "constants/message"
 import { defaultData, defaultErrorMessage } from "constants/product"
+
 // Types
 import { Product } from "interfaces/product/Product"
+
 // Service
-import { deleteProductId, mutationProduct } from "service/product"
+import { addProduct, deleteProductId, updateProduct } from "service/product"
+
 // helper
 import { validateForm } from "helpers/validateForm"
+
 // hooks
-import useProduct, { InfiniteQueryProps } from "hooks/useProduct"
+import useProduct from "hooks/useProduct"
 import { ToastType } from "hooks/useToast"
+
 // Component
-import Button from "@components/common/button/Button"
+// import Button from "@components/common/button/Button"
 import AddCard from "@components/common/card/addCard/AddCard"
 import Spinner from "@components/common/spinner/Spinner"
 import MultiModal from "@components/modals/multiModal/MultiModal"
 import ProductCard from "@components/common/card/productCard/ProductCard"
 import ConfirmModal from "@components/modals/confirmModal/ConfirmModal"
+import Header from "@components/header/Header"
+import Button from "@components/common/button/Button"
 
-function MainPage() {
-  const [modalProductData, setModalProductData] = useState(defaultData)
+const MainPage = () => {
+  // useProduct
+  const { productList, getProductList, queryPram, searchName, sortValue, setSearchName, setSortValue, setLimitProduct, limitProduct } = useProduct()
+
+  // useContext
+  const { showToast, hideToast } = useContext(ToastContext)
+
+  // useState
   const [errorModalMessage, setErrorModalMessage] = useState(defaultErrorMessage)
-  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [modalProductData, setModalProductData] = useState(defaultData)
   const [showMutationModal, setShowMutationModal] = useState(false)
-  const [isLoadingShow, setIsLoading] = useState(false)
-  const [titleModal, setTitleModal] = useState('')
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [disableBtn, setDisableBtn] = useState(false)
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('')
+  const [titleModal, setTitleModal] = useState('')
 
-  const { productList, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useProduct()
-  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (modalProductData) {
@@ -42,91 +56,56 @@ function MainPage() {
     }
   }, [modalProductData])
 
-  const { showToast, hideToast } = useContext(ToastContext)
+  useEffect(() => {
+    setSearchName(searchName)
+    setSortValue(sortValue)
+    setLimitProduct(limitProduct)
+    getProductList(queryPram)
+  }, [searchName, sortValue, limitProduct, setSortValue, setSearchName, setLimitProduct])
 
-  // Handle add product and update product
-  const { mutate: mutateProduct } = useMutation({
-    mutationFn: (input: Product) => {
-      return mutationProduct(input)
-    },
-
-    onMutate: () => {
-      setIsLoading(true)
-    },
-
-    onSuccess: (data) => {
-      const currentProductData = queryClient.getQueryData<InfiniteQueryProps<Product>>(['products'])
-
-      let toastMessage = '';
-      if (currentProductData) {
-        let existedProductIndex = -1;
-
-        for (const productPage of currentProductData.pages) {
-          const foundProductIndex = productPage.data.findIndex((product) => {
-            return product.id === data.id
-          })
-
-          if (foundProductIndex > -1) {
-            existedProductIndex = foundProductIndex
-          }
-        }
-
-        if (existedProductIndex < 0) {
-          toastMessage = PRODUCT_MESSAGE.ADD_SUCCESS
-        } else {
-          toastMessage = PRODUCT_MESSAGE.EDIT_SUCCESS
-        }
+  const mutateProduct = async (input: Product): Promise<void> => {
+    try {
+      if (input.id === '') {
+        setIsLoading((prev) => !prev)
+        await addProduct(input)
+        await getProductList(queryPram)
+        console.log(await getProductList(queryPram))
+        handleCancelModal()
+        showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS)
+        hideToast()
+      } else {
+        setIsLoading((prev) => !prev)
+        await updateProduct(input)
+        await getProductList(queryPram)
+        handleCancelModal()
+        showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS)
+        hideToast()
       }
-
+    } catch {
       handleCancelModal()
-      setIsLoading(false)
-      showToast(toastMessage, ToastType.SUCCESS)
-      hideToast()
-    },
-    onError: () => {
-      handleCancelModal()
-      setIsLoading(false)
       showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR)
       hideToast()
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] })
-    },
-
-    networkMode: 'always'
-  })
+    }
+    setIsLoading((prev) => !prev)
+  }
 
   // Handle delete product
-  const { mutate: deleteProduct } = useMutation({
-    mutationFn: (id: string) => {
-      return deleteProductId(id)
-    },
-
-    onMutate: () => {
-      setIsLoading(true)
-    },
-
-    onSuccess: () => {
+  const deleteProduct = async (id: string) => {
+    try {
+      setIsLoading((prev) => !prev)
+      await deleteProductId(id)
+      await getProductList(queryPram)
       setShowConfirmModal(false)
-      setIsLoading(false)
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS)
       hideToast()
-    },
-
-    onError: () => {
+    } catch {
       setShowConfirmModal(false)
-      setIsLoading(false)
       showToast(PRODUCT_MESSAGE.REMOVE_ERROR, ToastType.ERROR)
       hideToast()
-    },
+    }
+    setIsLoading((prev) => !prev)
+  }
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    },
-
-    networkMode: 'always'
-  })
 
   // Handle click add product
   const onClickAdd = () => {
@@ -155,14 +134,8 @@ function MainPage() {
 
   // Cancel modal
   const handleCancelModal = () => {
-    if (modalProductData?.id === defaultData.id) {
-      setModalProductData(defaultData);
-    } else {
-      setModalProductData(modalProductData!)
-    }
-
+    setModalProductData(defaultData);
     setErrorModalMessage(defaultErrorMessage)
-
     setShowMutationModal(false)
   }
 
@@ -185,12 +158,31 @@ function MainPage() {
   }
 
   // Handle click show more
-  const handleShowMore = () => {
-    fetchNextPage()
+  const handleShowMore = async () => {
+    try {
+      setDisableBtn((prev) => !prev)
+      if (productList.length < queryPram.limit) {
+        return setDisableBtn((prev) => !prev)
+      }
+      setLimitProduct((prev) => prev + 9)
+      await getProductList(queryPram)
+    } catch {
+      showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR)
+    }
+    setDisableBtn((prev) => !prev)
+  }
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchName(e.target.value)
+  }
+
+  const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortValue(e.target.value)
   }
 
   return (
     <>
+      <Header handleChangeSort={handleChangeSort} handleChangeSearch={handleChangeSearch} searchValue={searchName} sortValue={sortValue} />
       <main className="main-content">
         <section className="section-manage">
           <div className="manage-list">
@@ -200,30 +192,28 @@ function MainPage() {
 
             <AddCard onClick={onClickAdd} />
 
-            {productList?.pages?.map((page, index) => (
+            {productList.map((product, index) => (
               <Fragment key={index}>
-                {page?.data.map(product => (
-                  <ProductCard
-                    product={product}
-                    key={product.id}
-                    onClickDel={handleClickDelete}
-                    onClickEdit={handleClickEditProduct}
-                  />
-                ))}
+                <ProductCard
+                  product={product}
+                  key={product.id}
+                  onClickDel={handleClickDelete}
+                  onClickEdit={handleClickEditProduct}
+                />
               </Fragment>
             ))}
 
-            {!isLoadingShow && productList?.pages[0].data.length === 0 && (
+            {!isLoading && productList?.length === 0 && (
               <div className="empty-message">
                 {PRODUCT_MESSAGE.EMPTY_MESSAGE}
               </div>
             )}
           </div>
-          <Button classButton="btn btn-expand" isVisible={hasNextPage} isDisabled={isFetchingNextPage} onClick={handleShowMore} >
-            {isFetchingNextPage ? (
+          {productList?.length === limitProduct && (<Button classButton="btn btn-expand" isDisabled={disableBtn} onClick={handleShowMore} >
+            {disableBtn ? (
               <div className="expand-loading"></div>
             ) : 'SHOW MORE'}
-          </Button>
+          </Button>)}
         </section>
       </main>
 

@@ -2,7 +2,7 @@ interface AddCardProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-function AddCard({ onClick }: AddCardProps) {
+const AddCard = ({ onClick }: AddCardProps) => {
   return (
     <>
       <div className="manage-card" onClick={onClick}>
