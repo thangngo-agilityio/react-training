@@ -10,7 +10,7 @@ interface ToastProps {
   toastType: ToastType
 }
 
-function Toast({ message, isShow, toastType }: ToastProps) {
+const Toast = ({ message, isShow, toastType }: ToastProps) => {
 
   return (
     <div style={{ visibility: isShow ? 'visible' : 'hidden', opacity: isShow ? '1' : '0' }} className={`toast ${toastType.toLowerCase()}`}>

@@ -1,41 +1,19 @@
-// Library
-import { useEffect, useState } from 'react';
 // Constants
 import { FILTER_ATTRIBUTE } from "constants/filter";
-// Hooks
-import useProduct from "hooks/useProduct"
+
 // Components
 import Sort from "@components/common/sort/Sort"
-import Spinner from "@components/common/spinner/Spinner";
 import InputField from "@components/common/inputField/InputField"
 import iconSearch from '../../../src/assets/icon/icon_search.svg'
 
-function Header() {
-  const [isLoading, setIsLoading] = useState(false)
-  const { setSearchName, searchName, path, refetch, isRefetching, sortValue, setSortValue } = useProduct()
+type HeaderProps = {
+  searchValue: string,
+  sortValue: string,
+  handleChangeSort: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  handleChangeSearch: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-
-  useEffect(() => {
-    console.log(path)
-    refetch()
-    setSearchName(searchName)
-  }, [searchName, refetch, path])
-
-  useEffect(() => {
-    setIsLoading(isRefetching)
-  }, [setIsLoading, isRefetching])
-
-  useEffect(() => {
-    setSearchName(searchName)
-  }, [searchName, setSearchName])
-
-  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchName(e.target.value)
-  }
-
-  const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortValue(e.target.value)
-  }
+const Header = ({ searchValue, sortValue, handleChangeSort, handleChangeSearch }: HeaderProps) => {
 
   const selectOption = [
     {
@@ -75,15 +53,12 @@ function Header() {
           <div className="nav-heading">
             <form className="form-search">
               <img src={iconSearch} className="icon-search" loading="eager" alt="search" />
-              <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." value={searchName} onChange={handleChangeSearch} />
+              <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." value={searchValue} onChange={handleChangeSearch} />
             </form>
           </div>
           <Sort selectOptions={selectOption} onChange={handleChangeSort} value={sortValue} />
         </nav>
       </header>
-      {isLoading && (
-        <Spinner />
-      )}
     </>
   )
 }

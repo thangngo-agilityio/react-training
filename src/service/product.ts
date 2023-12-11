@@ -15,23 +15,23 @@ export const deleteProductId = async (id: string) => {
   return product;
 };
 
-export const mutationProduct = async (inputProduct: Product) => {
-  if (inputProduct.id === '') {
-    const product: Product = {
-      ...inputProduct,
-      createdAt: new Date()
-    };
-    return await productService.post(product);
-  } else {
-    const product: Product = {
-      id: inputProduct.id,
-      name: inputProduct.name,
-      price: Number(inputProduct.price),
-      image: inputProduct.image,
-      quantity: Number(inputProduct.quantity),
-      createdAt: inputProduct.createdAt
-    };
-
-    return await productService.put(product, `${inputProduct.id}`);
-  }
+export const addProduct = async (inputProduct: Product) => {
+  const product: Product = {
+    ...inputProduct,
+    createdAt: new Date()
+  };
+  return await productService.post(product);
 };
+
+export const updateProduct = async (inputProduct: Product) => {
+  const product: Product = {
+    id: inputProduct.id,
+    name: inputProduct.name,
+    price: Number(inputProduct.price),
+    image: inputProduct.image,
+    quantity: Number(inputProduct.quantity),
+    createdAt: inputProduct.createdAt
+  };
+
+  return await productService.put(product, `${inputProduct.id}`);
+}
