@@ -7,7 +7,7 @@ interface ConfirmModalProps {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-function ConfirmModal({ dataId, onCancelClick, onSubmit }: ConfirmModalProps) {
+const ConfirmModal = ({ dataId, onCancelClick, onSubmit }: ConfirmModalProps) => {
   return (
     <div className="modal-del">
       <form onSubmit={onSubmit}>

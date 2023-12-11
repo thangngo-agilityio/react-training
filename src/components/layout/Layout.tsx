@@ -10,7 +10,7 @@ interface LayoutProps {
   children: ReactNode
 }
 
-function Layout({ children }: LayoutProps) {
+const Layout = ({ children }: LayoutProps) => {
   const { toast } = useContext(ToastContext)
 
   return (

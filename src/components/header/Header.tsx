@@ -1,7 +1,7 @@
 // Library
 import { useEffect, useState } from 'react';
 // Constants
-import { FILTER_ATTRIBUTE } from "constants/filter";
+import { DEFAULT_PAGINATION, FILTER_ATTRIBUTE } from "constants/filter";
 // Hooks
 import useProduct from "hooks/useProduct"
 // Components
@@ -10,27 +10,26 @@ import Spinner from "@components/common/spinner/Spinner";
 import InputField from "@components/common/inputField/InputField"
 import iconSearch from '../../../src/assets/icon/icon_search.svg'
 
-function Header() {
+const Header = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const { setSearchName, searchName, path, refetch, isRefetching, sortValue, setSortValue } = useProduct()
-
+  const { setSearchName, searchName, path, sortValue, setSortValue, getProductList } = useProduct()
 
   useEffect(() => {
-    console.log(path)
-    refetch()
+    getProductList(DEFAULT_PAGINATION)
     setSearchName(searchName)
-  }, [searchName, refetch, path])
+  }, [searchName, path])
 
-  useEffect(() => {
-    setIsLoading(isRefetching)
-  }, [setIsLoading, isRefetching])
+  // useEffect(() => {
+  //   setIsLoading((prev) => !prev)
+  // }, [setIsLoading])
 
   useEffect(() => {
     setSearchName(searchName)
   }, [searchName, setSearchName])
 
-  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchName(e.target.value)
+    await getProductList(DEFAULT_PAGINATION)
   }
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {

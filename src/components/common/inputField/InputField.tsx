@@ -1,6 +1,6 @@
 import { InputFiledProps } from "interfaces/input/InputField"
 
-function InputField({ htmlFor, labelClass, label, inputClass, name, value, placeholder, type, onChange }: InputFiledProps) {
+const InputField = ({ htmlFor, labelClass, label, inputClass, name, value, placeholder, type, onChange }: InputFiledProps) => {
   return (
     <>
       <label htmlFor={htmlFor} className={labelClass}>

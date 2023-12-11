@@ -13,7 +13,7 @@ interface MultiModalProps {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-function MultiModal({ title, productData = defaultData, errorProductMessage = defaultErrorMessage, onCancelClick, setProductData, onSubmit }: MultiModalProps) {
+const MultiModal = ({ title, productData = defaultData, errorProductMessage = defaultErrorMessage, onCancelClick, setProductData, onSubmit }: MultiModalProps) => {
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setProductData({

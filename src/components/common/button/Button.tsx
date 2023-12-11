@@ -8,7 +8,7 @@ type ButtonProps = {
   dataId?: string
   type?: 'submit' | 'button',
   isDisabled?: boolean
-  onClick: React.MouseEventHandler<HTMLButtonElement>
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
 const Button = ({ children, classButton, idButton, dataId, type, isDisabled = false, onClick }: ButtonProps) => {
