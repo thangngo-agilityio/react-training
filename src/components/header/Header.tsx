@@ -2,8 +2,9 @@
 import { FILTER_ATTRIBUTE } from 'constants/filter';
 
 // Components
-import Sort from '@components/common/sort/Sort';
-import InputField from '@components/common/inputField/InputField';
+import { InputField, Sort } from '..';
+
+// icon image
 import iconSearch from '../../../src/assets/icon/icon_search.svg';
 // Css
 import './header.css';
@@ -25,22 +26,22 @@ const Header = ({ searchValue, sortValue, handleChangeSort, handleChangeSearch }
     {
       value: FILTER_ATTRIBUTE.NAME_ASC,
       disabled: false,
-      children: 'Sort names asc'
+      children: 'Name asc'
     },
     {
       value: FILTER_ATTRIBUTE.NAME_DESC,
       disabled: false,
-      children: 'Sort names desc'
+      children: 'Name desc'
     },
     {
       value: FILTER_ATTRIBUTE.PRICE_ASC,
       disabled: false,
-      children: 'Sort price asc'
+      children: 'Price asc'
     },
     {
       value: FILTER_ATTRIBUTE.PRICE_DESC,
       disabled: false,
-      children: 'Sort price desc'
+      children: 'Price desc'
     }
   ];
 

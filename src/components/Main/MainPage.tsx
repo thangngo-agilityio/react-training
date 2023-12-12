@@ -23,13 +23,7 @@ import useProduct from 'hooks/useProduct';
 import { ToastType } from 'hooks/useToast';
 
 // Component
-import ProductCard from '@components/common/card/productCard/ProductCard';
-import ProductModal from '@components/ProductModal/ProductModal';
-import AddCard from '@components/common/card/addCard/AddCard';
-import Spinner from '@components/common/spinner/Spinner';
-import Button from '@components/common/button/Button';
-import Header from '@components/header/Header';
-import InputField from '@components/common/inputField/InputField';
+import { AddCard, Button, Header, InputField, ProductCard, ProductModal, Spinner } from '..';
 
 // Css
 import './main-page.css';

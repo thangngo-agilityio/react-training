@@ -1,5 +1,5 @@
 import { SortProps } from 'types/sort/Sort';
-import SortOption from './sortOption/SortOption';
+import SortOption from './SortOption/SortOption';
 import './sort.css';
 
 const Sort = ({ selectOptions, onChange, value }: SortProps) => {

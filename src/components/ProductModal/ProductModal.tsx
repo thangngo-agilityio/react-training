@@ -1,5 +1,5 @@
 import { FormEvent, ReactNode } from 'react';
-import Button from '@components/common/button/Button';
+import { Button } from '..';
 import './product-modal.css';
 
 type ProductModalProps = {
