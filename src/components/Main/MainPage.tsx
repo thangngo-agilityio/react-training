@@ -32,7 +32,7 @@ import Header from '@components/header/Header';
 import InputField from '@components/common/inputField/InputField';
 
 // Css
-import './main.css';
+import './main-page.css';
 
 const MainPage = () => {
   // useProduct
