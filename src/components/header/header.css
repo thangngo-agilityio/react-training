@@ -8,11 +8,11 @@
 
 .link-title {
   opacity: 1;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .link-title:hover {
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .header-title {
@@ -31,7 +31,7 @@
   width: 30px;
   height: 30px;
   opacity: 1;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .nav-login .icon-login {
@@ -41,5 +41,5 @@
 }
 
 .nav-login:hover {
-  opacity: .8;
+  opacity: 0.8;
 }

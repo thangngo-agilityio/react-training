@@ -3,7 +3,7 @@
 ## Overview
 
 - This document is intended to describe the requirements for the React practice.
-- Design: [Figma](https://www.figma.com/file/jxChNg9bwxv11ihSG9h28C/Foods-Mangement-(Copy)?type=design&node-id=512-5279&mode=design)
+- Design: [Figma](<https://www.figma.com/file/jxChNg9bwxv11ihSG9h28C/Foods-Mangement-(Copy)?type=design&node-id=512-5279&mode=design>)
 - Development plan: [Plan](https://docs.google.com/document/d/1cfmPlfCZO9Tz73_g3XCGXFFVkG_xM2SKcY8EEPzp87c/edit)
 
 ## Target
@@ -47,5 +47,6 @@
   - Run the practice `npm run dev` or `yarn dev`
 
 ## Author
+
 - Thang Ngo.
 - Email: thang.ngo@asnet.com.vn

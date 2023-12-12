@@ -1,6 +1,8 @@
-interface AddCardProps {
+import './add-card.css';
+
+type AddCardProps = {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
-}
+};
 
 const AddCard = ({ onClick }: AddCardProps) => {
   return (
@@ -11,7 +13,7 @@ const AddCard = ({ onClick }: AddCardProps) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AddCard
+export default AddCard;
