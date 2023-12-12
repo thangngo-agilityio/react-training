@@ -9,7 +9,7 @@
   background: none;
   color: var(--color-primary);
   cursor: pointer;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .btn:hover {

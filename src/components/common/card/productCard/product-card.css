@@ -10,7 +10,7 @@
   border-radius: var(--radius-primary);
   position: relative;
   padding-top: 20px;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .product-card:hover {
@@ -40,7 +40,7 @@
   right: 15px;
   cursor: pointer;
   opacity: 0;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .product-card:hover .btn-del {
@@ -72,11 +72,8 @@
   margin-bottom: 8px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.product-name::first-letter {
   text-transform: capitalize;
+  overflow: hidden;
 }
 
 .product-detail {
@@ -105,9 +102,9 @@
   width: 100%;
   padding: 16px 10px;
   border-radius: 0 0 8px 8px;
-  background: rgba(234, 124, 105, .24);
+  background: rgba(234, 124, 105, 0.24);
   cursor: pointer;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .btn-edit:hover {
@@ -121,7 +118,7 @@
   font-size: var(--font-size-small);
   font-weight: 600;
   padding-left: 30px;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .btn-edit:hover .edit-text {
@@ -137,17 +134,17 @@
   height: 20px;
   top: -4px;
   left: 0px;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .edit-text::before {
   opacity: 1;
-  background: url('../../icon/icon_edit.svg') center/cover no-repeat;
+  background: url('../../../../assets/icon/icon_edit.svg') center/cover no-repeat;
 }
 
 .edit-text::after {
   opacity: 0;
-  background: url('../../icon/icon_edit_white.svg') center/cover no-repeat;
+  background: url('../../../../assets/icon/icon_edit_white.svg') center/cover no-repeat;
 }
 
 .btn-edit:hover .edit-text::before {

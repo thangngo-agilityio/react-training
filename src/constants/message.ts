@@ -14,5 +14,5 @@ export const PRODUCT_MESSAGE = {
   REMOVE_ERROR: 'Remove fail!',
   EDIT_SUCCESS: 'Edit successfully!',
   EDIT_FAILED: 'You need to change the value',
-  EMPTY_MESSAGE: 'Oops! There are no products or the product does not exist!!!'
-}
+  EMPTY_MESSAGE: 'There are no products or the product does not exist!'
+};

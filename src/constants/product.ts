@@ -1,4 +1,4 @@
-import { Product } from "interfaces/product/Product";
+import { Product } from 'types/product/Product';
 
 export const defaultData: Product = {
   id: '',
@@ -7,18 +7,18 @@ export const defaultData: Product = {
   image: '',
   quantity: 0,
   createdAt: new Date()
-}
+};
 
-export interface ProductErrorMessage {
+export type ProductErrorMessage = {
   name?: string;
-  price?: string
-  image?: string
-  quantity?: string
-}
+  price?: string;
+  image?: string;
+  quantity?: string;
+};
 
 export const defaultErrorMessage: ProductErrorMessage = {
   name: '',
   price: '',
   image: '',
-  quantity: '',
-}
+  quantity: ''
+};

@@ -1,6 +1,17 @@
-import { InputFiledProps } from "interfaces/input/InputField"
+import { InputFiledProps } from 'types/input/InputField';
+import './input-field.css';
 
-const InputField = ({ htmlFor, labelClass, label, inputClass, name, value, placeholder, type, onChange }: InputFiledProps) => {
+const InputField = ({
+  htmlFor,
+  labelClass,
+  label,
+  inputClass,
+  name,
+  value,
+  placeholder,
+  type,
+  onChange
+}: InputFiledProps) => {
   return (
     <>
       <label htmlFor={htmlFor} className={labelClass}>
@@ -16,8 +27,7 @@ const InputField = ({ htmlFor, labelClass, label, inputClass, name, value, place
         placeholder={placeholder}
       />
     </>
-  )
-}
+  );
+};
 
-export default InputField
-
+export default InputField;

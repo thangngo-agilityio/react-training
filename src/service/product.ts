@@ -1,4 +1,4 @@
-import { Product } from 'interfaces/product/Product';
+import { Product } from 'types/product/Product';
 import HttpsService from './httpsService';
 
 const productService = new HttpsService<Product>('products');
@@ -34,4 +34,4 @@ export const updateProduct = async (inputProduct: Product) => {
   };
 
   return await productService.put(product, `${inputProduct.id}`);
-}
+};

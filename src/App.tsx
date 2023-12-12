@@ -1,11 +1,10 @@
 // Provider
-import { ToastContextProvider } from "context/toast";
+import { ToastContextProvider } from 'context/toast';
 
 // Component
-import Layout from "@components/layout/Layout";
+import Layout from '@components/Layout/Layout';
 
 function App() {
-
   return (
     <ToastContextProvider>
       <Layout />

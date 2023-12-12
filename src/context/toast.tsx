@@ -1,17 +1,17 @@
 // Library
 import { createContext, ReactNode } from 'react';
 // Custom hooks
-import useToast, { ToastType } from 'hooks/useToast'
+import useToast, { ToastType } from 'hooks/useToast';
 
-interface ToastContextProps {
+type ToastContextProps = {
   toast: {
-    message: string,
-    toastType: ToastType,
-    isVisible: boolean
-  }
-  showToast: (message: string, toastType: ToastType) => void
-  hideToast: () => void
-}
+    message: string;
+    toastType: ToastType;
+    isVisible: boolean;
+  };
+  showToast: (message: string, toastType: ToastType) => void;
+  hideToast: () => void;
+};
 
 export const ToastContext = createContext<ToastContextProps>({
   toast: {
@@ -19,24 +19,22 @@ export const ToastContext = createContext<ToastContextProps>({
     toastType: ToastType.SUCCESS,
     isVisible: false
   },
-  showToast: () => { },
-  hideToast: () => { }
-})
+  showToast: () => {},
+  hideToast: () => {}
+});
 
-interface ToastContextProviderProps {
-  children: ReactNode
-}
+type ToastContextProviderProps = {
+  children: ReactNode;
+};
 
-export const ToastContextProvider = (({ children }: ToastContextProviderProps) => {
-  const { toast, showToast, hideToast } = useToast()
+export const ToastContextProvider = ({ children }: ToastContextProviderProps) => {
+  const { toast, showToast, hideToast } = useToast();
 
   const toastContextValue = {
-    toast, showToast, hideToast
-  }
+    toast,
+    showToast,
+    hideToast
+  };
 
-  return (
-    <ToastContext.Provider value={toastContextValue}>
-      {children}
-    </ToastContext.Provider>
-  )
-})
+  return <ToastContext.Provider value={toastContextValue}>{children}</ToastContext.Provider>;
+};
