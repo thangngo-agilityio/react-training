@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { ToastContext } from 'context/toast';
 // components
 import Toast from '@components/common/toast/Toast';
-import MainPage from '@components/Main/Main';
+import MainPage from '@components/Main/MainPage';
 
 const Layout = () => {
   const { toast } = useContext(ToastContext);
