@@ -5,8 +5,6 @@ import './button.css';
 type ButtonProps = {
   children: ReactNode;
   classButton: string;
-  idButton?: string;
-  dataId?: string;
   type: 'submit' | 'button';
   isDisabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -15,8 +13,6 @@ type ButtonProps = {
 const Button = ({
   children,
   classButton,
-  idButton,
-  dataId,
   type,
   isDisabled = false,
   onClick
@@ -25,9 +21,7 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
-      id={idButton}
       className={classButton}
-      data-id={dataId}
       disabled={isDisabled}
     >
       {children}

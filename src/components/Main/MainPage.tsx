@@ -38,89 +38,77 @@ const MainPage = () => {
     sortValue,
     setSearchName,
     setSortValue,
-    setLimitProduct,
-    limitProduct
+    setPageProduct,
+    pageProduct,
+    setProductList
   } = useProduct();
 
   // useContext
-  const { showToast, hideToast } = useContext(ToastContext);
+  const { showToast } = useContext(ToastContext);
 
   // useState
   const [errorModalMessage, setErrorModalMessage] = useState(defaultErrorMessage);
   const [modalProductData, setModalProductData] = useState(defaultData);
-  const [showMutationModal, setShowMutationModal] = useState(false);
+  const [showModalProduct, setShowModalProduct] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [isShowMore, setIsShowMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [disableBtn, setDisableBtn] = useState(false);
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
 
-  useEffect(() => {
-    if (modalProductData) {
-      setModalProductData(modalProductData);
-    }
-  }, [modalProductData]);
 
   useEffect(() => {
     setIsLoading((prevLoading) => !prevLoading);
-    setSearchName(searchName);
-    setSortValue(sortValue);
-    setLimitProduct(limitProduct);
+
     getProductList(queryPram);
     setTimeout(() => {
       setIsLoading((prevLoading) => !prevLoading);
     }, 1000);
-  }, [searchName, sortValue, limitProduct, setSortValue, setSearchName, setLimitProduct]);
+  }, [searchName, sortValue, pageProduct]);
 
-  const mutateProduct = async (input: Product): Promise<void> => {
+  // handle add product
+  const handleAddProduct = async (product: Product): Promise<void> => {
     try {
-      if (input.id === '') {
-        setIsLoading((prev) => !prev);
-        await addProduct(input);
-        await getProductList(queryPram);
-        console.log(await getProductList(queryPram));
-        handleCancelModal();
-        showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS);
-        hideToast();
-      } else {
-        setIsLoading((prev) => !prev);
-        await updateProduct(input);
-        await getProductList(queryPram);
-        handleCancelModal();
-        showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS);
-        hideToast();
-      }
-    } catch {
+      setIsLoading(true);
+      await addProduct(product);
+      await getProductList(queryPram);
       handleCancelModal();
-      showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR);
-      hideToast();
+      showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS);
+    } catch {
+      showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.SUCCESS);
     }
-    setIsLoading((prev) => !prev);
-  };
+    setIsLoading(false);
+  }
+
+  // Handle Edit Product
+  const handleEditProduct = async (product: Product): Promise<void> => {
+    try {
+      setIsLoading(true);
+      await updateProduct(product);
+      await getProductList(queryPram);
+      handleCancelModal();
+      showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS);
+    } catch {
+      showToast(PRODUCT_MESSAGE.EDIT_FAILED, ToastType.SUCCESS);
+    }
+    setIsLoading(false);
+  }
 
   // Handle delete product
   const deleteProduct = async (id: string) => {
     try {
-      setIsLoading((prev) => !prev);
+      setIsLoading(true);
       await deleteProductId(id);
       await getProductList(queryPram);
       setShowConfirmModal(false);
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS);
-      hideToast();
     } catch {
       setShowConfirmModal(false);
       showToast(PRODUCT_MESSAGE.REMOVE_ERROR, ToastType.ERROR);
-      hideToast();
     }
-    setIsLoading((prev) => !prev);
+    setIsLoading(false);
   };
 
-  // Handle click add product
-  const onClickAdd = () => {
-    setShowMutationModal(true);
-    setModalProductData(modalProductData);
-    setTitleModal(MODAL_TITLE.ADD);
-  };
 
   // submit modal form
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -130,12 +118,16 @@ const MainPage = () => {
     if (Object.values(validateMessage).join('')) {
       setErrorModalMessage(validateMessage);
     } else {
-      mutateProduct(modalProductData);
+      if (modalProductData.id === '') {
+        handleAddProduct(modalProductData)
+      } else {
+        handleEditProduct(modalProductData);
+      }
     }
   };
 
   // submit confirm
-  const onConfirm = (e: FormEvent<HTMLFormElement>) => {
+  const handleConfirm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     deleteProduct(getIdConfirmModal);
   };
@@ -144,11 +136,11 @@ const MainPage = () => {
   const handleCancelModal = () => {
     setModalProductData(defaultData);
     setErrorModalMessage(defaultErrorMessage);
-    setShowMutationModal(false);
+    setShowModalProduct(false);
   };
 
   // Cancel modal confirm
-  const onCancelConfirmModal = () => {
+  const handleCancelConfirmModal = () => {
     setShowConfirmModal(false);
   };
 
@@ -158,26 +150,33 @@ const MainPage = () => {
     setGetIdConfirmModal(productId);
   };
 
+  // Handle click add product
+  const handleClickAdd = () => {
+    setShowModalProduct(true);
+    setModalProductData(modalProductData);
+    setTitleModal(MODAL_TITLE.ADD);
+  };
+
   // Handle click edit product
   const handleClickEditProduct = (product: Product) => {
-    setShowMutationModal(true);
+    setShowModalProduct(true);
     setModalProductData(product);
     setTitleModal(MODAL_TITLE.EDIT);
   };
 
   // Handle click show more
   const handleShowMore = async () => {
-    try {
-      setIsLoading((prevLoading) => !prevLoading);
-      setDisableBtn((prevDisable) => !prevDisable);
-      setLimitProduct((prev) => prev + 9);
-    } catch {
-      showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR);
+    const data = await getProductList(queryPram)
+    console.log(data)
+    if (data.productList.length > 0) {
+      setPageProduct((prev) => prev + 1);
+      setProductList((products) => [...products, ...data.productList])
+    } else {
+      setIsShowMore(false)
     }
-    setDisableBtn((prevDisable) => !prevDisable);
-    setIsLoading((prevLoading) => !prevLoading);
   };
 
+  console.log(productList)
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchName(e.target.value);
   };
@@ -194,6 +193,7 @@ const MainPage = () => {
     });
   };
 
+
   return (
     <>
       <Header
@@ -207,7 +207,7 @@ const MainPage = () => {
           <div className="manage-list">
             {isLoading && <Spinner />}
 
-            <AddCard onClick={onClickAdd} />
+            <AddCard onClick={handleClickAdd} />
 
             {productList.map((product, index) => (
               <Fragment key={index}>
@@ -224,11 +224,11 @@ const MainPage = () => {
               <div className="empty-message">{PRODUCT_MESSAGE.EMPTY_MESSAGE}</div>
             )}
           </div>
-          {productList?.length === limitProduct && (
+          {isShowMore && (
             <Button
               classButton="btn btn-expand"
               type="button"
-              isDisabled={disableBtn}
+              isDisabled={isLoading}
               onClick={handleShowMore}
               children="SHOW MORE"
             />
@@ -241,15 +241,15 @@ const MainPage = () => {
           <ProductModal
             classTitle="confirm-title"
             title="Are you sure you want to delete this food?"
-            onCancelClick={onCancelConfirmModal}
-            onSubmit={onConfirm}
+            onCancelClick={handleCancelConfirmModal}
+            onSubmit={handleConfirm}
             dataId={getIdConfirmModal}
             textBtn="Yes"
           />
         </Suspense>
       )}
 
-      {showMutationModal && (
+      {showModalProduct && (
         <Suspense fallback={<Spinner />}>
           <ProductModal
             title={titleModal}

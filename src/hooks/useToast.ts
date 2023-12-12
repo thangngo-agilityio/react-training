@@ -15,9 +15,6 @@ const useToast = () => {
     setMessage(message);
     setIsVisible(true);
     setToastType(toastType);
-  };
-
-  const hideToast = () => {
     setTimeout(() => {
       setIsVisible(false);
       toastType;
@@ -30,8 +27,7 @@ const useToast = () => {
       toastType,
       isVisible
     },
-    showToast,
-    hideToast
+    showToast
   };
 };
 

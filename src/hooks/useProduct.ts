@@ -12,13 +12,13 @@ export type QueryPramsType = {
 
 const useProduct = () => {
   const [searchName, setSearchName] = useState('');
-  const [limitProduct, setLimitProduct] = useState(DEFAULT_LIMITATION);
+  const [pageProduct, setPageProduct] = useState(DEFAULT_PAGINATION);
   const [sortValue, setSortValue] = useState(FILTER_ATTRIBUTE.DEFAULT);
   const [productList, setProductList] = useState<Product[]>([]);
 
   const queryPram: QueryPramsType = {
-    page: DEFAULT_PAGINATION,
-    limit: limitProduct,
+    page: pageProduct,
+    limit: DEFAULT_LIMITATION,
     sortBy: sortValue,
     searchValue: searchName
   };
@@ -26,19 +26,18 @@ const useProduct = () => {
   const getProductList = async (queryPrams: QueryPramsType) => {
     const path = `name=${queryPrams.searchValue}&${queryPrams.sortBy}&limit=${queryPrams.limit}&page=${queryPrams.page}`;
     const result = await getProduct(path);
-    console.log('result', result);
     setProductList(result);
-    return result;
+    return { productList: [...result], queryPrams: queryPram.page + 1 };
   };
 
   return {
     productList,
-    setLimitProduct,
+    setPageProduct,
     setProductList,
     getProductList,
     setSearchName,
     setSortValue,
-    limitProduct,
+    pageProduct,
     searchName,
     sortValue,
     queryPram
