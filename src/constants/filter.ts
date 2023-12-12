@@ -1,4 +1,3 @@
-
 export const DEFAULT_LIMITATION = 9;
 
 export const DEFAULT_PAGINATION = 1;
@@ -9,4 +8,4 @@ export const FILTER_ATTRIBUTE = {
   NAME_DESC: 'orderby=name&order=desc',
   PRICE_ASC: 'orderby=price',
   PRICE_DESC: 'orderby=price&order=desc'
-}
+};

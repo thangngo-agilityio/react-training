@@ -3,7 +3,7 @@ export const MAX_POPUP = 5;
 
 export const TOGGLE_STATUS = {
   isShown: true,
-  isHidden: false,
+  isHidden: false
 };
 
 export const ORDER_DESC = 'desc';
@@ -18,17 +18,17 @@ export enum HTTP_METHOD {
 
 export const API_HEADERS = {
   'Content-Type': 'application/json'
-}
+};
 
 export const MOCK = {
   API: `https://65090e4ff6553137159ae935.mockapi.io/api/`
-}
+};
 
 export const API_PATH_URL = {
   PRODUCT_URL: '/products'
-}
+};
 
 export const MODAL_TITLE = {
   ADD: 'Create a new food',
   EDIT: 'Edit'
-}
+};

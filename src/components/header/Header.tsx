@@ -1,47 +1,48 @@
 // Constants
-import { FILTER_ATTRIBUTE } from "constants/filter";
+import { FILTER_ATTRIBUTE } from 'constants/filter';
 
 // Components
-import Sort from "@components/common/sort/Sort"
-import InputField from "@components/common/inputField/InputField"
-import iconSearch from '../../../src/assets/icon/icon_search.svg'
+import Sort from '@components/common/sort/Sort';
+import InputField from '@components/common/inputField/InputField';
+import iconSearch from '../../../src/assets/icon/icon_search.svg';
+// Css
+import './header.css';
 
 type HeaderProps = {
-  searchValue: string,
-  sortValue: string,
-  handleChangeSort: (e: React.ChangeEvent<HTMLSelectElement>) => void
-  handleChangeSearch: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
+  searchValue: string;
+  sortValue: string;
+  handleChangeSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleChangeSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const Header = ({ searchValue, sortValue, handleChangeSort, handleChangeSearch }: HeaderProps) => {
-
   const selectOption = [
     {
       value: FILTER_ATTRIBUTE.DEFAULT,
       disabled: false,
-      children: 'Default',
+      children: 'Default'
     },
     {
       value: FILTER_ATTRIBUTE.NAME_ASC,
       disabled: false,
-      children: 'Sort names asc',
+      children: 'Sort names asc'
     },
     {
       value: FILTER_ATTRIBUTE.NAME_DESC,
       disabled: false,
-      children: 'Sort names desc',
+      children: 'Sort names desc'
     },
     {
       value: FILTER_ATTRIBUTE.PRICE_ASC,
       disabled: false,
-      children: 'Sort price asc',
+      children: 'Sort price asc'
     },
     {
       value: FILTER_ATTRIBUTE.PRICE_DESC,
       disabled: false,
-      children: 'Sort price desc',
-    },
-  ]
+      children: 'Sort price desc'
+    }
+  ];
 
   return (
     <>
@@ -53,14 +54,21 @@ const Header = ({ searchValue, sortValue, handleChangeSort, handleChangeSearch }
           <div className="nav-heading">
             <form className="form-search">
               <img src={iconSearch} className="icon-search" loading="eager" alt="search" />
-              <InputField type="search" inputClass="input-search" htmlFor="search" placeholder="Search for food, coffe, etc.." value={searchValue} onChange={handleChangeSearch} />
+              <InputField
+                type="search"
+                inputClass="input-search"
+                htmlFor="search"
+                placeholder="Search for food, coffe, etc.."
+                value={searchValue}
+                onChange={handleChangeSearch}
+              />
             </form>
           </div>
           <Sort selectOptions={selectOption} onChange={handleChangeSort} value={sortValue} />
         </nav>
       </header>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

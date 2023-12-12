@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export enum ToastType {
   SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR',
+  ERROR = 'ERROR'
 }
 
 const useToast = () => {
@@ -28,10 +28,10 @@ const useToast = () => {
     toast: {
       message,
       toastType,
-      isVisible,
+      isVisible
     },
     showToast,
-    hideToast,
+    hideToast
   };
 };
 

@@ -1,5 +1,4 @@
-import { API_HEADERS, HTTP_METHOD, MOCK } from "constants/common";
-
+import { API_HEADERS, HTTP_METHOD, MOCK } from 'constants/common';
 
 /**
  * @class HttpsService
@@ -8,7 +7,7 @@ import { API_HEADERS, HTTP_METHOD, MOCK } from "constants/common";
 export default class HttpsService<T> {
   private fullPath: string;
   constructor(path: string) {
-    this.fullPath = MOCK.API + path
+    this.fullPath = MOCK.API + path;
   }
 
   /**
@@ -20,15 +19,15 @@ export default class HttpsService<T> {
     try {
       const response = await fetch(this.fullPath, {
         method: HTTP_METHOD.POST,
-        mode: "cors",
-        cache: "no-cache",
+        mode: 'cors',
+        cache: 'no-cache',
         headers: API_HEADERS,
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       });
-      return response.json()
+      return response.json();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      return error
+      return error;
     }
   };
 
@@ -63,9 +62,9 @@ export default class HttpsService<T> {
       return response.json();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      return error
+      return error;
     }
-  }
+  };
 
   /**
    * @description delete data at server
@@ -75,9 +74,9 @@ export default class HttpsService<T> {
   delete = async (id: string): Promise<T> => {
     try {
       const response = await fetch(this.fullPath + `/${id}`, {
-        method: HTTP_METHOD.DELETE,
+        method: HTTP_METHOD.DELETE
       });
-      return response.json()
+      return response.json();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return error;
@@ -94,12 +93,12 @@ export default class HttpsService<T> {
       const response = await fetch(`${this.fullPath}/${id}`, {
         method: HTTP_METHOD.PUT,
         headers: API_HEADERS,
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       });
       return response.json();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return error;
     }
-  }
+  };
 }

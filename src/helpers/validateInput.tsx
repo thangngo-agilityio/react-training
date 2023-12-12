@@ -1,10 +1,15 @@
-import { VALIDATE_MESSAGE } from "constants/message";
-import { IMAGE_REGEX, NAME_CHARACTERS_REGEX, PRICE_REGEX, NUMBER_REGEX, QUANTITY_REGEX } from "constants/regex";
+import { VALIDATE_MESSAGE } from 'constants/message';
+import {
+  IMAGE_REGEX,
+  NAME_CHARACTERS_REGEX,
+  PRICE_REGEX,
+  NUMBER_REGEX,
+  QUANTITY_REGEX
+} from 'constants/regex';
 
 const validateRequired = (value = '', field: string): string | undefined => {
   return value ? undefined : VALIDATE_MESSAGE.REQUIRED_ERROR.replace('{field}', field);
 };
-
 
 /**
  * @description handle validate name
@@ -20,7 +25,7 @@ export const validateName = (name = ''): string | undefined => {
   }
 
   return;
-}
+};
 
 /**
  * @description handle validate price
@@ -32,7 +37,7 @@ export const validatePrice = (price = ''): string | undefined => {
   }
 
   if (!price.match(NUMBER_REGEX)) {
-    return VALIDATE_MESSAGE.NUMBER_VALID
+    return VALIDATE_MESSAGE.NUMBER_VALID;
   }
 
   if (!price.match(PRICE_REGEX)) {
@@ -40,7 +45,7 @@ export const validatePrice = (price = ''): string | undefined => {
   }
 
   return;
-}
+};
 
 /**
  * @description handle validate image
@@ -56,7 +61,7 @@ export const validateImage = (image = ''): string | undefined => {
   }
 
   return;
-}
+};
 
 /**
  * @description handle validate quantity
@@ -72,5 +77,4 @@ export const validateQuantity = (quantity = ''): string | undefined => {
   }
 
   return;
-}
-
+};
