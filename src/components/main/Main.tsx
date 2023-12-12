@@ -57,10 +57,14 @@ const MainPage = () => {
   }, [modalProductData])
 
   useEffect(() => {
+    setIsLoading((prevLoading) => !prevLoading)
     setSearchName(searchName)
     setSortValue(sortValue)
     setLimitProduct(limitProduct)
     getProductList(queryPram)
+    setTimeout(() => {
+      setIsLoading((prevLoading) => !prevLoading)
+    }, 1000);
   }, [searchName, sortValue, limitProduct, setSortValue, setSearchName, setLimitProduct])
 
   const mutateProduct = async (input: Product): Promise<void> => {
@@ -160,16 +164,14 @@ const MainPage = () => {
   // Handle click show more
   const handleShowMore = async () => {
     try {
-      setDisableBtn((prev) => !prev)
-      if (productList.length < queryPram.limit) {
-        return setDisableBtn((prev) => !prev)
-      }
+      setIsLoading((prevLoading) => !prevLoading)
+      setDisableBtn((prevDisable) => !prevDisable)
       setLimitProduct((prev) => prev + 9)
-      await getProductList(queryPram)
     } catch {
       showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.ERROR)
     }
-    setDisableBtn((prev) => !prev)
+    setDisableBtn((prevDisable) => !prevDisable)
+    setIsLoading((prevLoading) => !prevLoading)
   }
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -209,11 +211,7 @@ const MainPage = () => {
               </div>
             )}
           </div>
-          {productList?.length === limitProduct && (<Button classButton="btn btn-expand" isDisabled={disableBtn} onClick={handleShowMore} >
-            {disableBtn ? (
-              <div className="expand-loading"></div>
-            ) : 'SHOW MORE'}
-          </Button>)}
+          {productList?.length === limitProduct && (<Button classButton="btn btn-expand" type="button" isDisabled={disableBtn} onClick={handleShowMore} children="SHOW MORE" />)}
         </section>
       </main>
 

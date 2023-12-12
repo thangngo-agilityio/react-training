@@ -3,10 +3,10 @@ import { ReactNode } from 'react';
 // Set type
 type ButtonProps = {
   children: ReactNode
-  classButton?: string
+  classButton: string
   idButton?: string
   dataId?: string
-  type?: 'submit' | 'button',
+  type: 'submit' | 'button',
   isDisabled?: boolean
   onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
