@@ -23,11 +23,13 @@ const useProduct = () => {
     searchValue: searchName
   };
 
-  const getProductList = async (queryPrams: QueryPramsType) => {
-    const path = `name=${queryPrams.searchValue}&${queryPrams.sortBy}&limit=${queryPrams.limit}&page=${queryPrams.page}`;
-    const result = await getProduct(path);
+  const path = `name=${queryPram.searchValue}&${queryPram.sortBy}&limit=${queryPram.limit}&page=`;
+
+  const getProductList = async (pageParams: number) => {
+
+    const result = await getProduct(path + `${pageParams}`);
     setProductList(result);
-    return { productList: [...result], queryPrams: queryPram.page + 1 };
+    return { productList: [...result], pageParams: pageParams + 1 };
   };
 
   return {

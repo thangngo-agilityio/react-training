@@ -27,13 +27,13 @@ import { AddCard, Button, Header, InputField, ProductCard, ProductModal, Spinner
 
 // Css
 import './main-page.css';
+import { DEFAULT_PAGINATION } from 'constants/filter';
 
 const MainPage = () => {
   // useProduct
   const {
     productList,
     getProductList,
-    queryPram,
     searchName,
     sortValue,
     setSearchName,
@@ -60,7 +60,7 @@ const MainPage = () => {
   useEffect(() => {
     setIsLoading((prevLoading) => !prevLoading);
 
-    getProductList(queryPram);
+    getProductList(DEFAULT_PAGINATION);
     setTimeout(() => {
       setIsLoading((prevLoading) => !prevLoading);
     }, 1000);
@@ -71,7 +71,7 @@ const MainPage = () => {
     try {
       setIsLoading(true);
       await addProduct(product);
-      await getProductList(queryPram);
+      await getProductList(DEFAULT_PAGINATION);
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -85,7 +85,7 @@ const MainPage = () => {
     try {
       setIsLoading(true);
       await updateProduct(product);
-      await getProductList(queryPram);
+      await getProductList(DEFAULT_PAGINATION);
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -99,7 +99,7 @@ const MainPage = () => {
     try {
       setIsLoading(true);
       await deleteProductId(id);
-      await getProductList(queryPram);
+      await getProductList(DEFAULT_PAGINATION);
       setShowConfirmModal(false);
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -166,7 +166,7 @@ const MainPage = () => {
 
   // Handle click show more
   const handleShowMore = async () => {
-    const data = await getProductList(queryPram)
+    const data = await getProductList(DEFAULT_PAGINATION)
     console.log(data)
     if (data.productList.length > 0) {
       setPageProduct((prev) => prev + 1);
