@@ -13,7 +13,7 @@ const ProductCard = ({ product, onClickDel, onClickEdit }: ProductProps) => {
 
   return (
     <div className='product-card'>
-      <Button classButton='btn-del' onClick={onDeleteProduct} dataId={product.id} children={<img src={iconDelete} alt="Cross icon" className='icon-del' />} />
+      <Button classButton='btn-del' type='button' onClick={onDeleteProduct} dataId={product.id} children={<img src={iconDelete} alt="Cross icon" className='icon-del' />} />
       <div className="product-wrapper">
         <div className="product-img">
           <img src={product.image} alt={product.name} className='img-item' />
@@ -27,7 +27,7 @@ const ProductCard = ({ product, onClickDel, onClickEdit }: ProductProps) => {
           </div>
         </div>
       </div>
-      <Button classButton='btn-edit' onClick={onEditProduct} dataId={product.id} children={<p className='edit-text' data-id={product.id}>Edit dish</p>}></Button>
+      <Button classButton='btn-edit' onClick={onEditProduct} type='button' dataId={product.id} children={<p className='edit-text' data-id={product.id}>Edit dish</p>}></Button>
     </div>
   )
 }

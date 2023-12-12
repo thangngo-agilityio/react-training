@@ -50,7 +50,7 @@ const MultiModal = ({ title, productData = defaultData, errorProductMessage = de
             <p id="quantity-error" className="error-message">{errorProductMessage.quantity}</p>
           </div>
           <div className="form-btn">
-            <Button children="Cancel" classButton="btn btn-cancel" onClick={onCancelClick} />
+            <Button children="Cancel" type="button" classButton="btn btn-cancel" onClick={onCancelClick} />
             <Button type="submit" children="Save" classButton="btn btn-cancel" />
           </div>
         </form>

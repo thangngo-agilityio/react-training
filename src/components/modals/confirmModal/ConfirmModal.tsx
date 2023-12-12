@@ -15,7 +15,7 @@ const ConfirmModal = ({ dataId, onCancelClick, onSubmit }: ConfirmModalProps) =>
           <input type="number" hidden defaultValue={dataId} />
           <h2 className="confirm-title">Are you sure you want to delete this food?</h2>
           <div className="confirm-btn">
-            <Button classButton="btn btn-cancel" idButton="btn-cancel" children="Cancel" onClick={onCancelClick} />
+            <Button classButton="btn btn-cancel" type="button" idButton="btn-cancel" children="Cancel" onClick={onCancelClick} />
             <Button type="submit" classButton="btn" children="Yes" />
           </div>
         </div>
