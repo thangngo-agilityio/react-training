@@ -28,6 +28,7 @@ const useProduct = () => {
     const path = queryParams(queryParam);
     const result = await getProduct(path);
     setProductList(result);
+    console.log('result', result)
     return result;
   };
 
@@ -41,17 +42,17 @@ const useProduct = () => {
 
   const handleAddProduct = async (data: Product) => {
     await addProduct(data)
-    await getProductList(queryParam)
+    await handleGetShowMore(queryParam.page)
   }
 
   const handleUpdateProduct = async (data: Product) => {
     await updateProduct(data)
-    await getProductList(queryParam)
+    await handleGetShowMore(queryParam.page)
   }
 
   const handleDeleteProduct = async (id: string) => {
     await deleteProductId(id)
-    await getProductList(queryParam)
+    await handleGetShowMore(queryParam.page)
   }
 
   return {

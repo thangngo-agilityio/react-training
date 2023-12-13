@@ -196,6 +196,7 @@ const MainPage = () => {
     });
   };
 
+
   return (
     <>
       <Header
