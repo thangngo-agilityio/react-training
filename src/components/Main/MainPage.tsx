@@ -39,7 +39,6 @@ const MainPage = () => {
     queryPram,
     setSearchName,
     setSortValue,
-    setProductList,
     handleGetShowMore,
     setPageProduct
   } = useProduct();
@@ -56,7 +55,6 @@ const MainPage = () => {
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
 
-  const dataRef: Product[] = productList;
   const pageRef = useRef(DEFAULT_PAGINATION);
 
   useEffect(() => {
@@ -168,8 +166,6 @@ const MainPage = () => {
       if (data.length > 0) {
         pageRef.current += 1;
         setPageProduct((pageRef.current += 1));
-        dataRef.push(...data);
-        setProductList(dataRef);
       }
     } catch {
       showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR);

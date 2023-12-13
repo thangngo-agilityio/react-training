@@ -11,6 +11,7 @@ export type QueryPramsType = {
   name: string;
 };
 
+
 const useProduct = () => {
   const [searchName, setSearchName] = useState('');
   const [pageProduct, setPageProduct] = useState(DEFAULT_PAGINATION);
@@ -24,10 +25,8 @@ const useProduct = () => {
     name: searchName
   };
 
-  // const path = `name=${queryParams.searchValue}&${queryParams.sortBy}&limit=${queryParams.limit}&page=${queryParams.page}`;
   const getProductList = async (queryPram: QueryPramsType) => {
     const path = queryParams(queryPram);
-
     const result = await getProduct(path);
     setProductList(result);
     return result;
@@ -38,7 +37,7 @@ const useProduct = () => {
       queryPram.page = page;
       const path = queryParams(queryPram);
       const products = await getProduct(path);
-      setProductList(products);
+      setProductList([...productList, ...products]);
       return products;
     } catch (error) {
       return error;
