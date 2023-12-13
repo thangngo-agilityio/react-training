@@ -2,46 +2,62 @@ import { DEFAULT_LIMITATION, DEFAULT_PAGINATION, FILTER_ATTRIBUTE } from 'consta
 import { getProduct } from 'service/product';
 import { useState } from 'react';
 import { Product } from 'types/product/Product';
+import { queryParams } from 'helpers/buildQueryString';
 
 export type QueryPramsType = {
   page: number;
   limit: number;
   sortBy: string;
-  searchValue: string;
+  name: string;
 };
+
 
 const useProduct = () => {
   const [searchName, setSearchName] = useState('');
-  const [limitProduct, setLimitProduct] = useState(DEFAULT_LIMITATION);
+  const [pageProduct, setPageProduct] = useState(DEFAULT_PAGINATION);
   const [sortValue, setSortValue] = useState(FILTER_ATTRIBUTE.DEFAULT);
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const queryPram: QueryPramsType = {
-    page: DEFAULT_PAGINATION,
-    limit: limitProduct,
+  const queryPram = {
+    page: pageProduct,
+    limit: DEFAULT_LIMITATION,
     sortBy: sortValue,
-    searchValue: searchName
+    name: searchName
   };
 
-  const getProductList = async (queryPrams: QueryPramsType) => {
-    const path = `name=${queryPrams.searchValue}&${queryPrams.sortBy}&limit=${queryPrams.limit}&page=${queryPrams.page}`;
+  // const path = `name=${queryParams.searchValue}&${queryParams.sortBy}&limit=${queryParams.limit}&page=${queryParams.page}`;
+  const getProductList = async (queryPram: QueryPramsType) => {
+    const path = queryParams(queryPram)
+
     const result = await getProduct(path);
-    console.log('result', result);
     setProductList(result);
     return result;
   };
 
+  const handleGetShowMore = async (page: number) => {
+    try {
+      queryPram.page = page;
+      const path = queryParams(queryPram)
+      const products = await getProduct(path);
+      setProductList(products);
+      return products;
+    } catch (error) {
+      return error;
+    }
+  };
+
   return {
     productList,
-    setLimitProduct,
+    handleGetShowMore,
+    setPageProduct,
     setProductList,
     getProductList,
     setSearchName,
     setSortValue,
-    limitProduct,
+    pageProduct,
     searchName,
     sortValue,
-    queryPram
+    queryPram,
   };
 };
 
