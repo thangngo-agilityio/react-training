@@ -5,10 +5,10 @@ import { ProductErrorMessage, defaultErrorMessage } from 'constants/product';
 
 type ProductModalProps = {
   product: Product;
-  errorProductMessage: ProductErrorMessage;
-  onCancelClick: () => void;
-  onchange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  errorProductMessage?: ProductErrorMessage;
+  onCancelClick?: () => void;
+  onchange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
 };
 
 const ProductModal = ({

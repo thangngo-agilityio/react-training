@@ -1,10 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ProductModal from './Modal';
-import InputField from '@components/common/InputField/InputField';
+import { Button, ProductModal } from '..';
+import { defaultData } from 'constants/product';
+import Modal from './Modal';
 
-const meta: Meta<typeof ProductModal> = {
+const meta: Meta<typeof Modal> = {
   title: 'COMPONENTS/ProductModal',
-  component: ProductModal
+  component: Modal
 };
 
 export default meta;
@@ -13,53 +14,11 @@ type Story = StoryObj<typeof meta>;
 
 export const ModalAdd: Story = {
   render: (args) => (
-    <ProductModal
+    <Modal
       {...args}
       title="Create new product"
-      textBtn="Save"
       children={
-        <>
-          <div className="form-item">
-            <InputField
-              htmlFor="name"
-              labelClass="form-title"
-              label="Name"
-              type="text"
-              inputClass="form-input"
-              name="name"
-            />
-          </div>
-          <div className="form-item">
-            <InputField
-              htmlFor="price"
-              labelClass="form-title"
-              label="Price"
-              type="number"
-              inputClass="form-input"
-              name="price"
-            />
-          </div>
-          <div className="form-item">
-            <InputField
-              htmlFor="image"
-              labelClass="form-title"
-              label="Image URL"
-              type="text"
-              inputClass="form-input"
-              name="image"
-            />
-          </div>
-          <div className="form-item is-special">
-            <InputField
-              htmlFor="quantity"
-              labelClass="form-title"
-              label="Quantity"
-              type="number"
-              inputClass="form-input is-size"
-              name="quantity"
-            />
-          </div>
-        </>
+        <ProductModal {...args} product={defaultData}/>
       }
     />
   )
@@ -67,53 +26,11 @@ export const ModalAdd: Story = {
 
 export const ModalEdit: Story = {
   render: (args) => (
-    <ProductModal
+    <Modal
       {...args}
       title="Edit"
-      textBtn="Save"
       children={
-        <>
-          <div className="form-item">
-            <InputField
-              htmlFor="name"
-              labelClass="form-title"
-              label="Name"
-              type="text"
-              inputClass="form-input"
-              name="name"
-            />
-          </div>
-          <div className="form-item">
-            <InputField
-              htmlFor="price"
-              labelClass="form-title"
-              label="Price"
-              type="number"
-              inputClass="form-input"
-              name="price"
-            />
-          </div>
-          <div className="form-item">
-            <InputField
-              htmlFor="image"
-              labelClass="form-title"
-              label="Image URL"
-              type="text"
-              inputClass="form-input"
-              name="image"
-            />
-          </div>
-          <div className="form-item is-special">
-            <InputField
-              htmlFor="quantity"
-              labelClass="form-title"
-              label="Quantity"
-              type="number"
-              inputClass="form-input is-size"
-              name="quantity"
-            />
-          </div>
-        </>
+        <ProductModal product={defaultData} />
       }
     />
   )
@@ -121,11 +38,24 @@ export const ModalEdit: Story = {
 
 export const ModalConfirm: Story = {
   render: (args) => (
-    <ProductModal
+    <Modal
       {...args}
-      classTitle="confirm-title"
+      classTitle='confirm-title'
       title="Are you sure you want to delete this food?"
-      textBtn="Save"
+      children={
+        <div className="form-btn">
+          <Button
+            children="Cancel"
+            type="button"
+            classButton="btn btn-cancel"
+          />
+          <Button
+            type="button"
+            children="Confirm"
+            classButton="btn btn-cancel"
+          />
+        </div>
+      }
     />
   )
 };
