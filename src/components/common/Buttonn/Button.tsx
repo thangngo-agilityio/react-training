@@ -10,20 +10,9 @@ type ButtonProps = {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const Button = ({
-  children,
-  classButton,
-  type,
-  isDisabled = false,
-  onClick
-}: ButtonProps) => {
+const Button = ({ children, classButton, type, isDisabled = false, onClick }: ButtonProps) => {
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={classButton}
-      disabled={isDisabled}
-    >
+    <button type={type} onClick={onClick} className={classButton} disabled={isDisabled}>
       {children}
     </button>
   );

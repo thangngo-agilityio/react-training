@@ -1,7 +1,7 @@
 //
 import { ProductProps } from 'types/product/Product';
 // Component
-import Button from '@components/common/Button/Button';
+import Button from '@components/common/Buttonn/Button';
 // Css
 import './product-card.css';
 // Icon image
