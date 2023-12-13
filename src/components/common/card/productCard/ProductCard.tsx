@@ -15,14 +15,12 @@ const ProductCard = ({ product, onClickDel, onClickEdit }: ProductProps) => {
   const handleEditProduct = () => {
     onClickEdit(product);
   };
-
   return (
     <div className="product-card">
       <Button
         classButton="btn-del"
         type="button"
         onClick={handleDeleteProduct}
-        dataId={product.id}
         children={<img src={iconDelete} alt="Cross icon" className="icon-del" />}
       />
       <div className="product-wrapper">
@@ -42,7 +40,6 @@ const ProductCard = ({ product, onClickDel, onClickEdit }: ProductProps) => {
         classButton="btn-edit"
         onClick={handleEditProduct}
         type="button"
-        dataId={product.id}
         children={
           <p className="edit-text" data-id={product.id}>
             Edit dish
