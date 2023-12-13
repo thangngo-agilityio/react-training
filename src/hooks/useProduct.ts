@@ -31,17 +31,14 @@ const useProduct = () => {
 
     const result = await getProduct(path);
     setProductList(result);
-    console.log('result get:', result);
     return result;
   };
 
   const handleGetShowMore = async (page: number) => {
     try {
       queryPram.page = page;
-      console.log(page);
       const path = queryParams(queryPram)
       const products = await getProduct(path);
-      console.log('products', products);
       setProductList(products);
       return products;
     } catch (error) {

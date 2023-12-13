@@ -27,6 +27,7 @@ import { AddCard, Button, Header, InputField, ProductCard, ProductModal, Spinner
 
 // Css
 import './main-page.css';
+import { DEFAULT_LIMITATION, DEFAULT_PAGINATION } from '../../constants/filter';
 
 const MainPage = () => {
   // useProduct
@@ -39,7 +40,8 @@ const MainPage = () => {
     setSearchName,
     setSortValue,
     setProductList,
-    handleGetShowMore
+    handleGetShowMore,
+    setPageProduct,
   } = useProduct();
 
   // useContext
@@ -50,22 +52,16 @@ const MainPage = () => {
   const [modalProductData, setModalProductData] = useState(defaultData);
   const [showModalProduct, setShowModalProduct] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [isShowMore, setIsShowMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
 
   const dataRef: Product[] = productList
-  // dataRef.current = productList
-  const pageRef = useRef(1)
+  const pageRef = useRef(DEFAULT_PAGINATION)
 
 
   useEffect(() => {
-    setIsLoading((prevLoading) => !prevLoading);
     getProductList(queryPram);
-    setTimeout(() => {
-      setIsLoading((prevLoading) => !prevLoading);
-    }, 1000);
   }, [searchName, sortValue]);
 
   // handle add product
@@ -168,24 +164,21 @@ const MainPage = () => {
 
   // Handle click show more
   const handleShowMore = async () => {
-    // const data = await getProductList(queryPram)
-    // console.log(data);
-    const recordPerPage = await handleGetShowMore(pageRef.current + 1) as Product[]
+    try {
+      setIsLoading(true)
+      const data = await handleGetShowMore(pageRef.current + 1) as Product[]
 
-    pageRef.current += 1
-
-    dataRef.push(...recordPerPage)
-    console.log(dataRef);
-    setProductList(dataRef)
-    // if (data.length > 0) {
-    //   setPageProduct((prev) => prev + 1);
-    //   // dataRef.current.push(...data)
-    //   // console.log(dataRef.current);
-    // } else {
-    //   setIsShowMore(false)
-    // }
+      if (data.length > 0) {
+        pageRef.current += 1
+        setPageProduct(pageRef.current += 1)
+        dataRef.push(...data)
+        setProductList(dataRef)
+      }
+    } catch {
+      showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR)
+    }
+    setIsLoading(false)
   };
-  console.log(dataRef);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchName(e.target.value);
@@ -203,7 +196,6 @@ const MainPage = () => {
     });
   };
 
-  console.log(productList);
   return (
     <>
       <Header
@@ -219,24 +211,21 @@ const MainPage = () => {
 
             <AddCard onClick={handleClickAdd} />
 
-            {productList?.map((product, index) => {
-              return (
-                <Fragment key={index}>
-                  <ProductCard
-                    product={product}
-                    key={product.id}
-                    onClickDel={handleClickDelete}
-                    onClickEdit={handleClickEditProduct}
-                  />
-                </Fragment>
-              )
-            })}
+            {productList?.map((product) => (
+              <Fragment key={product.id}>
+                <ProductCard
+                  product={product}
+                  onClickDel={handleClickDelete}
+                  onClickEdit={handleClickEditProduct}
+                />
+              </Fragment>
+            ))}
 
             {!isLoading && productList?.length === 0 && (
               <div className="empty-message">{PRODUCT_MESSAGE.EMPTY_MESSAGE}</div>
             )}
           </div>
-          {isShowMore && (
+          {productList?.length === DEFAULT_LIMITATION && (
             <Button
               classButton="btn btn-expand"
               type="button"
