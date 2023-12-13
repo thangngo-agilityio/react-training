@@ -2,13 +2,15 @@ import { DEFAULT_LIMITATION, DEFAULT_PAGINATION, FILTER_ATTRIBUTE } from 'consta
 import { getProduct } from 'service/product';
 import { useState } from 'react';
 import { Product } from 'types/product/Product';
+import { queryParams } from 'helpers/buildQueryString';
 
 export type QueryPramsType = {
   page: number;
   limit: number;
   sortBy: string;
-  searchValue: string;
+  name: string;
 };
+
 
 const useProduct = () => {
   const [searchName, setSearchName] = useState('');
@@ -16,24 +18,40 @@ const useProduct = () => {
   const [sortValue, setSortValue] = useState(FILTER_ATTRIBUTE.DEFAULT);
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const queryPram: QueryPramsType = {
+  const queryPram = {
     page: pageProduct,
     limit: DEFAULT_LIMITATION,
     sortBy: sortValue,
-    searchValue: searchName
+    name: searchName
   };
 
-  const path = `name=${queryPram.searchValue}&${queryPram.sortBy}&limit=${queryPram.limit}&page=`;
+  // const path = `name=${queryParams.searchValue}&${queryParams.sortBy}&limit=${queryParams.limit}&page=${queryParams.page}`;
+  const getProductList = async (queryPram: QueryPramsType) => {
+    const path = queryParams(queryPram)
 
-  const getProductList = async (pageParams: number) => {
-
-    const result = await getProduct(path + `${pageParams}`);
+    const result = await getProduct(path);
     setProductList(result);
-    return { productList: [...result], pageParams: pageParams + 1 };
+    console.log('result get:', result);
+    return result;
+  };
+
+  const handleGetShowMore = async (page: number) => {
+    try {
+      queryPram.page = page;
+      console.log(page);
+      const path = queryParams(queryPram)
+      const products = await getProduct(path);
+      console.log('products', products);
+      setProductList(products);
+      return products;
+    } catch (error) {
+      return error;
+    }
   };
 
   return {
     productList,
+    handleGetShowMore,
     setPageProduct,
     setProductList,
     getProductList,
@@ -42,7 +60,7 @@ const useProduct = () => {
     pageProduct,
     searchName,
     sortValue,
-    queryPram
+    queryPram,
   };
 };
 

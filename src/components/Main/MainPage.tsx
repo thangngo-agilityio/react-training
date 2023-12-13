@@ -1,5 +1,5 @@
 // Library
-import { FormEvent, Fragment, Suspense, useContext, useState, useEffect } from 'react';
+import { FormEvent, Fragment, Suspense, useContext, useState, useEffect, useRef } from 'react';
 
 // Context
 import { ToastContext } from 'context/toast';
@@ -27,7 +27,6 @@ import { AddCard, Button, Header, InputField, ProductCard, ProductModal, Spinner
 
 // Css
 import './main-page.css';
-import { DEFAULT_PAGINATION } from 'constants/filter';
 
 const MainPage = () => {
   // useProduct
@@ -36,11 +35,11 @@ const MainPage = () => {
     getProductList,
     searchName,
     sortValue,
+    queryPram,
     setSearchName,
     setSortValue,
-    setPageProduct,
-    pageProduct,
-    setProductList
+    setProductList,
+    handleGetShowMore
   } = useProduct();
 
   // useContext
@@ -56,22 +55,25 @@ const MainPage = () => {
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
 
+  const dataRef: Product[] = productList
+  // dataRef.current = productList
+  const pageRef = useRef(1)
+
 
   useEffect(() => {
     setIsLoading((prevLoading) => !prevLoading);
-
-    getProductList(DEFAULT_PAGINATION);
+    getProductList(queryPram);
     setTimeout(() => {
       setIsLoading((prevLoading) => !prevLoading);
     }, 1000);
-  }, [searchName, sortValue, pageProduct]);
+  }, [searchName, sortValue]);
 
   // handle add product
   const handleAddProduct = async (product: Product): Promise<void> => {
     try {
       setIsLoading(true);
       await addProduct(product);
-      await getProductList(DEFAULT_PAGINATION);
+      await getProductList(queryPram);
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -85,7 +87,7 @@ const MainPage = () => {
     try {
       setIsLoading(true);
       await updateProduct(product);
-      await getProductList(DEFAULT_PAGINATION);
+      await getProductList(queryPram);
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -99,7 +101,7 @@ const MainPage = () => {
     try {
       setIsLoading(true);
       await deleteProductId(id);
-      await getProductList(DEFAULT_PAGINATION);
+      await getProductList(queryPram);
       setShowConfirmModal(false);
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -166,17 +168,25 @@ const MainPage = () => {
 
   // Handle click show more
   const handleShowMore = async () => {
-    const data = await getProductList(DEFAULT_PAGINATION)
-    console.log(data)
-    if (data.productList.length > 0) {
-      setPageProduct((prev) => prev + 1);
-      setProductList((products) => [...products, ...data.productList])
-    } else {
-      setIsShowMore(false)
-    }
-  };
+    // const data = await getProductList(queryPram)
+    // console.log(data);
+    const recordPerPage = await handleGetShowMore(pageRef.current + 1) as Product[]
 
-  console.log(productList)
+    pageRef.current += 1
+
+    dataRef.push(...recordPerPage)
+    console.log(dataRef);
+    setProductList(dataRef)
+    // if (data.length > 0) {
+    //   setPageProduct((prev) => prev + 1);
+    //   // dataRef.current.push(...data)
+    //   // console.log(dataRef.current);
+    // } else {
+    //   setIsShowMore(false)
+    // }
+  };
+  console.log(dataRef);
+
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchName(e.target.value);
   };
@@ -193,7 +203,7 @@ const MainPage = () => {
     });
   };
 
-
+  console.log(productList);
   return (
     <>
       <Header
@@ -209,16 +219,18 @@ const MainPage = () => {
 
             <AddCard onClick={handleClickAdd} />
 
-            {productList.map((product, index) => (
-              <Fragment key={index}>
-                <ProductCard
-                  product={product}
-                  key={product.id}
-                  onClickDel={handleClickDelete}
-                  onClickEdit={handleClickEditProduct}
-                />
-              </Fragment>
-            ))}
+            {productList?.map((product, index) => {
+              return (
+                <Fragment key={index}>
+                  <ProductCard
+                    product={product}
+                    key={product.id}
+                    onClickDel={handleClickDelete}
+                    onClickEdit={handleClickEditProduct}
+                  />
+                </Fragment>
+              )
+            })}
 
             {!isLoading && productList?.length === 0 && (
               <div className="empty-message">{PRODUCT_MESSAGE.EMPTY_MESSAGE}</div>
