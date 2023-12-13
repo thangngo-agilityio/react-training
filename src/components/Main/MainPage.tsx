@@ -23,7 +23,7 @@ import useProduct from 'hooks/useProduct';
 import { ToastType } from 'hooks/useToast';
 
 // Component
-import { AddCard, Button, Header, InputField, ProductCard, ProductModal, Spinner } from '..';
+import { AddCard, Button, Header, Modal, ProductCard, ProductModal, Spinner } from '..';
 
 // Css
 import './main-page.css';
@@ -41,7 +41,7 @@ const MainPage = () => {
     setSortValue,
     setProductList,
     handleGetShowMore,
-    setPageProduct,
+    setPageProduct
   } = useProduct();
 
   // useContext
@@ -56,9 +56,8 @@ const MainPage = () => {
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
 
-  const dataRef: Product[] = productList
-  const pageRef = useRef(DEFAULT_PAGINATION)
-
+  const dataRef: Product[] = productList;
+  const pageRef = useRef(DEFAULT_PAGINATION);
 
   useEffect(() => {
     getProductList(queryPram);
@@ -76,7 +75,7 @@ const MainPage = () => {
       showToast(PRODUCT_MESSAGE.ADD_FAILED, ToastType.SUCCESS);
     }
     setIsLoading(false);
-  }
+  };
 
   // Handle Edit Product
   const handleEditProduct = async (product: Product): Promise<void> => {
@@ -90,7 +89,7 @@ const MainPage = () => {
       showToast(PRODUCT_MESSAGE.EDIT_FAILED, ToastType.SUCCESS);
     }
     setIsLoading(false);
-  }
+  };
 
   // Handle delete product
   const deleteProduct = async (id: string) => {
@@ -107,7 +106,6 @@ const MainPage = () => {
     setIsLoading(false);
   };
 
-
   // submit modal form
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,7 +115,7 @@ const MainPage = () => {
       setErrorModalMessage(validateMessage);
     } else {
       if (modalProductData.id === '') {
-        handleAddProduct(modalProductData)
+        handleAddProduct(modalProductData);
       } else {
         handleEditProduct(modalProductData);
       }
@@ -125,8 +123,7 @@ const MainPage = () => {
   };
 
   // submit confirm
-  const handleConfirm = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleConfirm = () => {
     deleteProduct(getIdConfirmModal);
   };
 
@@ -165,19 +162,19 @@ const MainPage = () => {
   // Handle click show more
   const handleShowMore = async () => {
     try {
-      setIsLoading(true)
-      const data = await handleGetShowMore(pageRef.current + 1) as Product[]
+      setIsLoading(true);
+      const data = (await handleGetShowMore(pageRef.current + 1)) as Product[];
 
       if (data.length > 0) {
-        pageRef.current += 1
-        setPageProduct(pageRef.current += 1)
-        dataRef.push(...data)
-        setProductList(dataRef)
+        pageRef.current += 1;
+        setPageProduct((pageRef.current += 1));
+        dataRef.push(...data);
+        setProductList(dataRef);
       }
     } catch {
-      showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR)
+      showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,91 +236,42 @@ const MainPage = () => {
 
       {showConfirmModal && (
         <Suspense fallback={<Spinner />}>
-          <ProductModal
+          <Modal
             classTitle="confirm-title"
             title="Are you sure you want to delete this food?"
-            onCancelClick={handleCancelConfirmModal}
-            onSubmit={handleConfirm}
             dataId={getIdConfirmModal}
-            textBtn="Yes"
-          />
+          >
+            <div className="form-btn">
+              <Button
+                children="Cancel"
+                type="button"
+                classButton="btn btn-cancel"
+                onClick={handleCancelConfirmModal}
+              />
+              <Button
+                type="button"
+                onClick={handleConfirm}
+                children="Confirm"
+                classButton="btn btn-cancel"
+              />
+            </div>
+          </Modal>
         </Suspense>
       )}
 
       {showModalProduct && (
         <Suspense fallback={<Spinner />}>
-          <ProductModal
-            title={titleModal}
-            onSubmit={handleSubmit}
-            onCancelClick={handleCancelModal}
-            textBtn="Save"
-            children={
-              <>
-                <div className="form-item">
-                  <InputField
-                    htmlFor="name"
-                    labelClass="form-title"
-                    label="Name"
-                    type="text"
-                    inputClass="form-input"
-                    name="name"
-                    value={modalProductData.name}
-                    onChange={handleChangeInput}
-                  />
-                  {errorModalMessage.name && (
-                    <p id="name-error" className="error-message">
-                      {errorModalMessage.name}
-                    </p>
-                  )}
-                </div>
-                <div className="form-item">
-                  <InputField
-                    htmlFor="price"
-                    labelClass="form-title"
-                    label="Price"
-                    type="number"
-                    inputClass="form-input"
-                    name="price"
-                    value={`${modalProductData.price}`}
-                    onChange={handleChangeInput}
-                  />
-                  <p id="price-error" className="error-message">
-                    {errorModalMessage.price}
-                  </p>
-                </div>
-                <div className="form-item">
-                  <InputField
-                    htmlFor="image"
-                    labelClass="form-title"
-                    label="Image URL"
-                    type="text"
-                    inputClass="form-input"
-                    name="image"
-                    value={modalProductData.image}
-                    onChange={handleChangeInput}
-                  />
-                  <p id="image-error" className="error-message">
-                    {errorModalMessage.image}
-                  </p>
-                </div>
-                <div className="form-item is-special">
-                  <InputField
-                    htmlFor="quantity"
-                    labelClass="form-title"
-                    label="Quantity"
-                    type="number"
-                    inputClass="form-input is-size"
-                    name="quantity"
-                    value={`${modalProductData.quantity}`}
-                    onChange={handleChangeInput}
-                  />
-                  <p id="quantity-error" className="error-message">
-                    {errorModalMessage.quantity}
-                  </p>
-                </div>
-              </>
+          <Modal title={titleModal}>
+            {
+              <ProductModal
+                product={modalProductData}
+                errorProductMessage={errorModalMessage}
+                onchange={handleChangeInput}
+                onSubmit={handleSubmit}
+                onCancelClick={handleCancelModal}
+              />
             }
-          />
+          </Modal>
         </Suspense>
       )}
     </>

@@ -1,8 +1,8 @@
 // Provider
 import { ToastContextProvider } from 'context/toast';
+import { Layout } from './components';
 
 // Component
-import Layout from '@components/Layout/Layout';
 
 function App() {
   return (

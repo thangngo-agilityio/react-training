@@ -12,4 +12,5 @@ export { default as Toast } from './common/Toast/Toast';
 export { default as Header } from './Header/Header';
 export { default as Layout } from './Layout/Layout';
 export { default as Main } from './Main/MainPage';
-export { default as ProductModal } from './ProductModal/ProductModal';
+export { default as Modal } from './Modal/Modal';
+export { default as ProductModal } from './Modal/ProductModal/ProductModal';

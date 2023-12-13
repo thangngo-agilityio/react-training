@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ProductModal from './ProductModal';
+import ProductModal from './Modal';
 import InputField from '@components/common/InputField/InputField';
 
 const meta: Meta<typeof ProductModal> = {

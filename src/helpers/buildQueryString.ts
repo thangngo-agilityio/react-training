@@ -10,10 +10,7 @@ export const queryParams = <T extends Record<string, string | number | boolean>>
 ): string => {
   const queryString = Object.keys(params)
     .filter((key) => !!params[key as AllowedQueryKeys<T>])
-    .map(
-      (key) =>
-        `${key}=${params[key as AllowedQueryKeys<T>]}`
-    )
+    .map((key) => `${key}=${params[key as AllowedQueryKeys<T>]}`)
     .join('&');
 
   return queryString;
