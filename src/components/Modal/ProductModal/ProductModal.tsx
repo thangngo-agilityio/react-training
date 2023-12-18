@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 import { Button, InputField } from '@components/index';
-import { Product } from 'types/product/Product';
+import { Product } from 'types';
 import { ProductErrorMessage, defaultErrorMessage } from 'constants/product';
 
 type ProductModalProps = {
@@ -22,7 +22,6 @@ const ProductModal = ({
     <form className="modal-form" onSubmit={onSubmit}>
       <div className="form-item">
         <InputField
-          htmlFor="name"
           labelClass="form-title"
           label="Name"
           type="text"
@@ -30,16 +29,11 @@ const ProductModal = ({
           name="name"
           value={product.name}
           onChange={onchange}
+          errorMessage={errorProductMessage.name}
         />
-        {errorProductMessage.name && (
-          <p id="name-error" className="error-message">
-            {errorProductMessage.name}
-          </p>
-        )}
       </div>
       <div className="form-item">
         <InputField
-          htmlFor="price"
           labelClass="form-title"
           label="Price"
           type="number"
@@ -47,14 +41,11 @@ const ProductModal = ({
           name="price"
           value={`${product.price}`}
           onChange={onchange}
+          errorMessage={errorProductMessage.price}
         />
-        <p id="price-error" className="error-message">
-          {errorProductMessage.price}
-        </p>
       </div>
       <div className="form-item">
         <InputField
-          htmlFor="image"
           labelClass="form-title"
           label="Image URL"
           type="text"
@@ -62,14 +53,11 @@ const ProductModal = ({
           name="image"
           value={product.image}
           onChange={onchange}
+          errorMessage={errorProductMessage.image}
         />
-        <p id="image-error" className="error-message">
-          {errorProductMessage.image}
-        </p>
       </div>
       <div className="form-item is-special">
         <InputField
-          htmlFor="quantity"
           labelClass="form-title"
           label="Quantity"
           type="number"
@@ -77,10 +65,8 @@ const ProductModal = ({
           name="quantity"
           value={`${product.quantity}`}
           onChange={onchange}
+          errorMessage={errorProductMessage.quantity}
         />
-        <p id="quantity-error" className="error-message">
-          {errorProductMessage.quantity}
-        </p>
       </div>
       <div className="form-btn">
         <Button

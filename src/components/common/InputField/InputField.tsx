@@ -1,31 +1,36 @@
-import { InputFiledProps } from 'types/input/InputField';
+import { InputFiledProps } from 'types';
 import './input-field.css';
 
 const InputField = ({
-  htmlFor,
-  labelClass,
-  label,
-  inputClass,
   name,
-  value,
-  placeholder,
   type,
+  label,
+  value,
+  labelClass,
+  inputClass,
+  placeholder,
+  errorMessage,
   onChange
 }: InputFiledProps) => {
   return (
     <>
-      <label htmlFor={htmlFor} className={labelClass}>
+      <label htmlFor={name} className={labelClass}>
         {label}
       </label>
       <input
         onChange={onChange}
         type={type}
         className={inputClass}
-        id={htmlFor}
+        id={name}
         name={name}
         value={value}
         placeholder={placeholder}
       />
+      {errorMessage && (
+        <p id="name-error" className="error-message">
+          {errorMessage}
+        </p>
+      )}
     </>
   );
 };

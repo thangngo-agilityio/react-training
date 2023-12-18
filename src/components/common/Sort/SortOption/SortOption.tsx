@@ -1,4 +1,4 @@
-import { SortOptionProps } from 'types/sort/Option';
+import { SortOptionProps } from 'types';
 
 const SortOption = ({ value, children, disabled }: SortOptionProps) => {
   return (

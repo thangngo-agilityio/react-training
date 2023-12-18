@@ -17,22 +17,14 @@ export const ModalAdd: Story = {
     <Modal
       {...args}
       title="Create new product"
-      children={
-        <ProductModal {...args} product={defaultData}/>
-      }
+      children={<ProductModal {...args} product={defaultData} />}
     />
   )
 };
 
 export const ModalEdit: Story = {
   render: (args) => (
-    <Modal
-      {...args}
-      title="Edit"
-      children={
-        <ProductModal product={defaultData} />
-      }
-    />
+    <Modal {...args} title="Edit" children={<ProductModal product={defaultData} />} />
   )
 };
 
@@ -40,20 +32,12 @@ export const ModalConfirm: Story = {
   render: (args) => (
     <Modal
       {...args}
-      classTitle='confirm-title'
+      classTitle="confirm-title"
       title="Are you sure you want to delete this food?"
       children={
         <div className="form-btn">
-          <Button
-            children="Cancel"
-            type="button"
-            classButton="btn btn-cancel"
-          />
-          <Button
-            type="button"
-            children="Confirm"
-            classButton="btn btn-cancel"
-          />
+          <Button children="Cancel" type="button" classButton="btn btn-cancel" />
+          <Button type="button" children="Confirm" classButton="btn btn-cancel" />
         </div>
       }
     />

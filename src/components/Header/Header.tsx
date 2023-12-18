@@ -10,13 +10,12 @@ import iconSearch from '../../../src/assets/icon/icon_search.svg';
 import './header.css';
 
 type HeaderProps = {
-  searchValue: string;
   sortValue: string;
   handleChangeSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   handleChangeSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Header = ({ searchValue, sortValue, handleChangeSort, handleChangeSearch }: HeaderProps) => {
+const Header = ({ sortValue, handleChangeSort, handleChangeSearch }: HeaderProps) => {
   const selectOption = [
     {
       value: FILTER_ATTRIBUTE.DEFAULT,
@@ -58,9 +57,8 @@ const Header = ({ searchValue, sortValue, handleChangeSort, handleChangeSearch }
               <InputField
                 type="search"
                 inputClass="input-search"
-                htmlFor="search"
+                name="search"
                 placeholder="Search for food, coffe, etc.."
-                value={searchValue}
                 onChange={handleChangeSearch}
               />
             </form>
