@@ -1,4 +1,4 @@
-import { Product } from 'types/product/Product';
+import { Product } from 'types';
 import { validateImage, validateName, validatePrice, validateQuantity } from './validateInput';
 
 /**

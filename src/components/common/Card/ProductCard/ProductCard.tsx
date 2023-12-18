@@ -1,20 +1,21 @@
 //
-import { ProductProps } from 'types/product/Product';
+import { ProductProps } from 'types';
 // Component
 import Button from '@components/common/Button/Button';
 // Css
 import './product-card.css';
 // Icon image
-import iconDelete from '../../../../assets/icon/icon_del.svg';
+import iconDelete from '@assets/icon/icon_del.svg';
 
-const ProductCard = ({ product, onClickDel, onClickEdit }: ProductProps) => {
+const ProductCard = ({ product, onDelete, onEdit }: ProductProps) => {
   const handleDeleteProduct = () => {
-    onClickDel(product.id);
+    onDelete(product.id);
   };
 
   const handleEditProduct = () => {
-    onClickEdit(product);
+    onEdit(product);
   };
+
   return (
     <div className="product-card">
       <Button
@@ -36,16 +37,11 @@ const ProductCard = ({ product, onClickDel, onClickEdit }: ProductProps) => {
           </div>
         </div>
       </div>
-      <Button
-        classButton="btn-edit"
-        onClick={handleEditProduct}
-        type="button"
-        children={
-          <p className="edit-text" data-id={product.id}>
-            Edit dish
-          </p>
-        }
-      ></Button>
+      <Button classButton="btn-edit" onClick={handleEditProduct} type="button">
+        <p className="edit-text" data-id={product.id}>
+          Edit dish
+        </p>
+      </Button>
     </div>
   );
 };
