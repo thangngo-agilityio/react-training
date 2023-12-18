@@ -30,6 +30,8 @@ const useProduct = () => {
     const path = queryParams(queryParam);
     const result = await getProduct(path);
     setProductList(result);
+    console.log(path);
+
     if (result.length < 9) {
       setIsLastPage(false);
     } else {
@@ -41,8 +43,9 @@ const useProduct = () => {
   // handle Show more
   const handleGetShowMore = async (page: number) => {
     queryParam.page = page;
+
     const products = await getProductList(queryParam);
-    setProductList(productList.concat(products));
+    setProductList(productList.concat(products))
   };
 
   const handleAddProduct = async (data: Product) => {
