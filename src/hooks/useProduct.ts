@@ -28,16 +28,14 @@ const useProduct = () => {
     const path = queryParams(queryParam);
     const result = await getProduct(path);
     setProductList(result);
-    console.log('result', result)
     return result;
   };
 
   const handleGetShowMore = async (page: number) => {
     queryParam.page = page;
-    const path = queryParams(queryParam);
-    const products = await getProduct(path);
+    const products = await getProductList(queryParam);
     setProductList([...productList, ...products]);
-    return products;
+    return ([...productList, ...products]);
   };
 
   const handleAddProduct = async (data: Product) => {
