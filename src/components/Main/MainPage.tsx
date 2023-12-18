@@ -47,13 +47,13 @@ const MainPage = () => {
     sortValue,
     queryParam,
     isLastPage,
+    pageProduct,
     setSearchName,
     setSortValue,
     handleUpdateProduct,
     handleDeleteProduct,
     handleGetShowMore,
     handleAddProduct,
-    setPageProduct
   } = useProduct();
 
   // useContext
@@ -72,7 +72,7 @@ const MainPage = () => {
 
   useEffect(() => {
     getProductList(queryParam);
-  }, [searchName, sortValue]);
+  }, [searchName, sortValue, pageProduct]);
 
   // handle add product
   const handleCreateProduct = async (product: Product): Promise<void> => {
@@ -172,10 +172,7 @@ const MainPage = () => {
     setIsLoading(true);
     setTimeout(async () => {
       try {
-        await handleGetShowMore(pageRef.current + 1);
-
-        pageRef.current += 1;
-        setPageProduct((pageRef.current += 1));
+        handleGetShowMore(pageRef.current += 1)
       } catch {
         showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR);
       }
