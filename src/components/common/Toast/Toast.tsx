@@ -7,14 +7,14 @@ import './toast.css';
 
 type ToastProps = {
   message: string;
-  isShow?: boolean;
   toastType: ToastType;
+  isShow?: boolean;
 };
 
 const Toast = ({ message, isShow, toastType }: ToastProps) => {
   return (
     <div
-      style={{ visibility: isShow ? 'visible' : 'hidden', opacity: isShow ? '1' : '0' }}
+      style={{ visibility: isShow ? 'visible' : 'hidden' }}
       className={`toast ${toastType.toLowerCase()}`}
     >
       <div className="toast-body">

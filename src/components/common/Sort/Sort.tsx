@@ -1,4 +1,4 @@
-import { SortProps } from 'types/sort/Sort';
+import { SortProps } from 'types';
 import SortOption from './SortOption/SortOption';
 import './sort.css';
 

@@ -1,4 +1,4 @@
-import { Product } from 'types/product/Product';
+import { Product } from 'types';
 import HttpsService from './httpsService';
 
 const productService = new HttpsService<Product>('products');

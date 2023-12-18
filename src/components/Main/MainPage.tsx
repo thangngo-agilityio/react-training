@@ -1,19 +1,32 @@
 // Library
-import { FormEvent, Fragment, Suspense, useContext, useState, useEffect, useRef } from 'react';
+import {
+  FormEvent,
+  Fragment,
+  Suspense,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  ChangeEvent
+} from 'react';
 
 // Context
 import { ToastContext } from 'context/toast';
 
 // Constant
-import { MODAL_TITLE } from 'constants/common';
-import { PRODUCT_MESSAGE } from 'constants/message';
-import { defaultData, defaultErrorMessage } from 'constants/product';
+import {
+  defaultData,
+  defaultErrorMessage,
+  PRODUCT_MESSAGE,
+  MODAL_TITLE,
+  DEFAULT_PAGINATION
+} from '@constants/index';
 
 // Types
-import { Product } from 'types/product/Product';
+import { Product } from 'types';
 
 // helper
-import { validateForm } from 'helpers/validateForm';
+import { validateForm } from 'helpers';
 
 // hooks
 import useProduct from 'hooks/useProduct';
@@ -24,7 +37,6 @@ import { AddCard, Button, Header, Modal, ProductCard, ProductModal, Spinner } fr
 
 // Css
 import './main-page.css';
-import { DEFAULT_LIMITATION, DEFAULT_PAGINATION } from '../../constants/filter';
 
 const MainPage = () => {
   // useProduct
@@ -34,6 +46,7 @@ const MainPage = () => {
     searchName,
     sortValue,
     queryParam,
+    isLastPage,
     setSearchName,
     setSortValue,
     handleUpdateProduct,
@@ -65,7 +78,7 @@ const MainPage = () => {
   const handleCreateProduct = async (product: Product): Promise<void> => {
     try {
       setIsLoading(true);
-      await handleAddProduct(product)
+      await handleAddProduct(product);
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -78,7 +91,7 @@ const MainPage = () => {
   const handleEditProduct = async (product: Product): Promise<void> => {
     try {
       setIsLoading(true);
-      await handleUpdateProduct(product)
+      await handleUpdateProduct(product);
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -91,7 +104,7 @@ const MainPage = () => {
   const deleteProduct = async (id: string) => {
     try {
       setIsLoading(true);
-      await handleDeleteProduct(id)
+      await handleDeleteProduct(id);
       setShowConfirmModal(false);
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -135,9 +148,9 @@ const MainPage = () => {
   };
 
   // handle click delete product
-  const handleClickDelete = (productId: string) => {
+  const handleClickDelete = (id: string) => {
     setShowConfirmModal(true);
-    setGetIdConfirmModal(productId);
+    setGetIdConfirmModal(id);
   };
 
   // Handle click add product
@@ -155,40 +168,41 @@ const MainPage = () => {
   };
 
   // Handle click show more
-  const handleShowMore = async () => {
-    try {
-      setIsLoading(true);
-      const data = (await handleGetShowMore(pageRef.current + 1)) as Product[];
+  const handleShowMore = () => {
+    setIsLoading(true);
+    setTimeout(async () => {
+      try {
+        await handleGetShowMore(pageRef.current + 1);
 
-      if (data.length > 0) {
         pageRef.current += 1;
         setPageProduct((pageRef.current += 1));
+      } catch {
+        showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR);
       }
-    } catch {
-      showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR);
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    }, 1000);
   };
 
   // handle search value
-  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLoading(true)
-    setSearchName(e.target.value);
+  const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false)
+      setSearchName(e.target.value);
+      setIsLoading(false);
     }, 1000);
   };
 
   // handle sort value
-  const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setIsLoading(true)
-    setSortValue(e.target.value);
+  const handleChangeSort = (e: ChangeEvent<HTMLSelectElement>) => {
+    setIsLoading(true);
+    const value = e.target.value;
     setTimeout(() => {
-      setIsLoading(false)
+      setSortValue(value);
+      setIsLoading(false);
     }, 1000);
   };
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trimStart();
     setModalProductData({
       ...modalProductData,
@@ -196,13 +210,11 @@ const MainPage = () => {
     });
   };
 
-
   return (
     <>
       <Header
         handleChangeSort={handleChangeSort}
         handleChangeSearch={handleChangeSearch}
-        searchValue={searchName}
         sortValue={sortValue}
       />
       <main className="main-content">
@@ -216,8 +228,8 @@ const MainPage = () => {
               <Fragment key={product.id}>
                 <ProductCard
                   product={product}
-                  onClickDel={handleClickDelete}
-                  onClickEdit={handleClickEditProduct}
+                  onDelete={handleClickDelete}
+                  onEdit={handleClickEditProduct}
                 />
               </Fragment>
             ))}
@@ -226,7 +238,7 @@ const MainPage = () => {
               <div className="empty-message">{PRODUCT_MESSAGE.EMPTY_MESSAGE}</div>
             )}
           </div>
-          {productList?.length === DEFAULT_LIMITATION && (
+          {isLastPage && (
             <Button
               classButton="btn btn-expand"
               type="button"
@@ -240,11 +252,7 @@ const MainPage = () => {
 
       {showConfirmModal && (
         <Suspense fallback={<Spinner />}>
-          <Modal
-            classTitle="confirm-title"
-            title="Are you sure you want to delete this food?"
-            dataId={getIdConfirmModal}
-          >
+          <Modal classTitle="confirm-title" title="Are you sure you want to delete this food?">
             <div className="form-btn">
               <Button
                 children="Cancel"

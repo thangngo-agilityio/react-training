@@ -1,7 +1,7 @@
 export type ProductProps = {
   product: Product;
-  onClickDel: (productId: string) => void;
-  onClickEdit: (product: Product) => void;
+  onDelete: (id: string) => void;
+  onEdit: (product: Product) => void;
 };
 
 export interface Product {

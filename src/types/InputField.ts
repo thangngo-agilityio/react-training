@@ -9,5 +9,6 @@ export type InputFiledProps = {
   name?: string;
   value?: string;
   placeholder?: string;
+  errorMessage?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };

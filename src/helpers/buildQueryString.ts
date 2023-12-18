@@ -1,4 +1,4 @@
-import { AllowedQueryKeys, QueryParamsType } from 'types/queryParams';
+import { AllowedQueryKeys, QueryParamsType } from 'types';
 
 /**
  *
