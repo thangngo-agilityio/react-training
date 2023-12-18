@@ -12,9 +12,6 @@ import { defaultData, defaultErrorMessage } from 'constants/product';
 // Types
 import { Product } from 'types/product/Product';
 
-// Service
-import { addProduct, deleteProductId, updateProduct } from 'service/product';
-
 // helper
 import { validateForm } from 'helpers/validateForm';
 
@@ -36,11 +33,13 @@ const MainPage = () => {
     getProductList,
     searchName,
     sortValue,
-    queryPram,
+    queryParam,
     setSearchName,
     setSortValue,
-    setProductList,
+    handleUpdateProduct,
+    handleDeleteProduct,
     handleGetShowMore,
+    handleAddProduct,
     setPageProduct
   } = useProduct();
 
@@ -56,19 +55,17 @@ const MainPage = () => {
   const [getIdConfirmModal, setGetIdConfirmModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
 
-  const dataRef: Product[] = productList;
   const pageRef = useRef(DEFAULT_PAGINATION);
 
   useEffect(() => {
-    getProductList(queryPram);
+    getProductList(queryParam);
   }, [searchName, sortValue]);
 
   // handle add product
-  const handleAddProduct = async (product: Product): Promise<void> => {
+  const handleCreateProduct = async (product: Product): Promise<void> => {
     try {
       setIsLoading(true);
-      await addProduct(product);
-      await getProductList(queryPram);
+      await handleAddProduct(product)
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.ADD_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -81,8 +78,7 @@ const MainPage = () => {
   const handleEditProduct = async (product: Product): Promise<void> => {
     try {
       setIsLoading(true);
-      await updateProduct(product);
-      await getProductList(queryPram);
+      await handleUpdateProduct(product)
       handleCancelModal();
       showToast(PRODUCT_MESSAGE.EDIT_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -95,8 +91,7 @@ const MainPage = () => {
   const deleteProduct = async (id: string) => {
     try {
       setIsLoading(true);
-      await deleteProductId(id);
-      await getProductList(queryPram);
+      await handleDeleteProduct(id)
       setShowConfirmModal(false);
       showToast(PRODUCT_MESSAGE.REMOVE_SUCCESS, ToastType.SUCCESS);
     } catch {
@@ -115,7 +110,7 @@ const MainPage = () => {
       setErrorModalMessage(validateMessage);
     } else {
       if (modalProductData.id === '') {
-        handleAddProduct(modalProductData);
+        handleCreateProduct(modalProductData);
       } else {
         handleEditProduct(modalProductData);
       }
@@ -168,8 +163,6 @@ const MainPage = () => {
       if (data.length > 0) {
         pageRef.current += 1;
         setPageProduct((pageRef.current += 1));
-        dataRef.push(...data);
-        setProductList(dataRef);
       }
     } catch {
       showToast(PRODUCT_MESSAGE.GET_ERROR, ToastType.ERROR);
@@ -177,12 +170,22 @@ const MainPage = () => {
     setIsLoading(false);
   };
 
+  // handle search value
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true)
     setSearchName(e.target.value);
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   };
 
+  // handle sort value
   const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setIsLoading(true)
     setSortValue(e.target.value);
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -192,6 +195,7 @@ const MainPage = () => {
       [e.target.name]: value
     });
   };
+
 
   return (
     <>

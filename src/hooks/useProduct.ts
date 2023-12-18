@@ -1,5 +1,5 @@
 import { DEFAULT_LIMITATION, DEFAULT_PAGINATION, FILTER_ATTRIBUTE } from 'constants/filter';
-import { getProduct } from 'service/product';
+import { addProduct, deleteProductId, getProduct, updateProduct } from 'service/product';
 import { useState } from 'react';
 import { Product } from 'types/product/Product';
 import { queryParams } from 'helpers/buildQueryString';
@@ -17,37 +17,48 @@ const useProduct = () => {
   const [sortValue, setSortValue] = useState(FILTER_ATTRIBUTE.DEFAULT);
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const queryPram = {
+  const queryParam = {
     page: pageProduct,
     limit: DEFAULT_LIMITATION,
     sortBy: sortValue,
     name: searchName
   };
 
-  // const path = `name=${queryParams.searchValue}&${queryParams.sortBy}&limit=${queryParams.limit}&page=${queryParams.page}`;
-  const getProductList = async (queryPram: QueryPramsType) => {
-    const path = queryParams(queryPram);
-
+  const getProductList = async (queryParam: QueryPramsType) => {
+    const path = queryParams(queryParam);
     const result = await getProduct(path);
     setProductList(result);
     return result;
   };
 
   const handleGetShowMore = async (page: number) => {
-    try {
-      queryPram.page = page;
-      const path = queryParams(queryPram);
-      const products = await getProduct(path);
-      setProductList(products);
-      return products;
-    } catch (error) {
-      return error;
-    }
+    queryParam.page = page;
+    const products = await getProductList(queryParam);
+    setProductList([...productList, ...products]);
+    return ([...productList, ...products]);
   };
+
+  const handleAddProduct = async (data: Product) => {
+    await addProduct(data)
+    await handleGetShowMore(queryParam.page)
+  }
+
+  const handleUpdateProduct = async (data: Product) => {
+    await updateProduct(data)
+    await handleGetShowMore(queryParam.page)
+  }
+
+  const handleDeleteProduct = async (id: string) => {
+    await deleteProductId(id)
+    await handleGetShowMore(queryParam.page)
+  }
 
   return {
     productList,
+    handleUpdateProduct,
+    handleDeleteProduct,
     handleGetShowMore,
+    handleAddProduct,
     setPageProduct,
     setProductList,
     getProductList,
@@ -56,7 +67,7 @@ const useProduct = () => {
     pageProduct,
     searchName,
     sortValue,
-    queryPram
+    queryParam
   };
 };
 
